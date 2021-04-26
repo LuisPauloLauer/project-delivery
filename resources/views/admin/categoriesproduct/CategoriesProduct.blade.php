@@ -142,8 +142,6 @@
 @endsection
 
 @section('javascript')
-    <!-- vue js app -->
-    <script src="{{ asset('js/app.js') }}"></script>
     <!-- DataTables -->
     <script src="{{ asset('admin/adminLTE/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('admin/adminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>

@@ -47,7 +47,8 @@
     <!-- JS Files -->
         <!-- jquery -->
         <script src="{{ asset('admin/node_modules/js/jquery.js') }}"></script>
-
+        <!-- vue js app -->
+        <script src="{{ asset('js/app.js') }}"></script>
         <!-- jQuery UI 1.11.4 -->
         <script src="{{ asset('admin/adminLTE/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
         <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
