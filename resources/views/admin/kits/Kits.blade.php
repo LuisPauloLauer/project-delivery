@@ -11,21 +11,6 @@
             pointer-events: none;
             cursor: default;
         }
-        .bootstrap-switch-id-ckbstatus{
-            min-width: 106px;
-        }
-        .bootstrap-switch-container{
-            min-width: 156px;
-        }
-        .bootstrap-switch-handle-on{
-            min-width: 52px;
-        }
-        .bootstrap-switch-label{
-            min-width: 52px;
-        }
-        .bootstrap-switch-handle-off{
-            min-width: 52px;
-        }
     </style>
 @endsection
 

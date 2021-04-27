@@ -517,7 +517,11 @@ class UsersAdmController extends Controller
 
             if($usersadm->save()){
                 $responseObject['success'] = true;
-                $responseObject['message'] = 'Usuário ID ('.$objectID.') alterado status';
+                if(strtoupper($objectStatus) == 'S'){
+                    $responseObject['message'] = 'Usuário ID ('.$objectID.') habilitado';
+                } else {
+                    $responseObject['message'] = 'Usuário ID ('.$objectID.') desabilitado';
+                }
 
                 unset($usersadm);
 

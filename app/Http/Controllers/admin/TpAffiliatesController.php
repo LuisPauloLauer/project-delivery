@@ -128,10 +128,13 @@ class TpAffiliatesController extends Controller
 
             if($tpaffiliate->save()){
                 $responseObject['success'] = true;
-                $responseObject['message'] = 'Tipo de Afiliado ID ('.$objectID.') alterado status';
+                if(strtoupper($objectStatus) == 'S'){
+                    $responseObject['message'] = 'Tipo de Afiliado ID ('.$objectID.') habilitado';
+                } else {
+                    $responseObject['message'] = 'Tipo de Afiliado ID ('.$objectID.') desabilitado';
+                }
 
                 unset($tpaffiliate);
-
                 echo json_encode($responseObject);
                 return;
             } else {
@@ -139,7 +142,6 @@ class TpAffiliatesController extends Controller
                 $responseObject['message'] = 'Tipo de Afiliado ID ('.$objectID.') erro ao alterar o status!';
 
                 unset($tpaffiliate);
-
                 echo json_encode($responseObject);
                 return;
             }

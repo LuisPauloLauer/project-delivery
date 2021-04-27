@@ -377,57 +377,21 @@ class StoresController extends Controller
             $store->status              = $objectStatus;
 
             if($store->save()){
-                /*
-                if($objectStatus == 'N'){
-                    $stores = mdAffiliates::find($store->affiliate)->pesqStoresByAffiliate()->get();
-
-                    if(count($stores) == 0){
-                        $affiliate = mdStores::find($store->id)->pesqAffiliate()->first();
-
-                        if($affiliate->status == 'S'){
-                            $affiliate->status = $objectStatus;
-                            if(!$affiliate->save()){
-                                $responseObject['success'] = false;
-                                $responseObject['message'] = 'Afiliado ID ('.$affiliate->id.') erro ao alterar o status!';
-
-                                unset($affiliate);
-
-                                echo json_encode($responseObject);
-                                return;
-                            }
-                        }
-                    }
-                } else {
-                    $affiliate = mdStores::find($store->id)->pesqAffiliate()->first();
-
-                    if($affiliate->status == 'N'){
-                        $affiliate->status = $objectStatus;
-                        if(!$affiliate->save()){
-                            $responseObject['success'] = false;
-                            $responseObject['message'] = 'Afiliado ID ('.$affiliate->id.') erro ao alterar o status!';
-
-                            unset($affiliate);
-
-                            echo json_encode($responseObject);
-                            return;
-                        }
-                    }
-                }*/
-
                 $responseObject['success'] = true;
-                $responseObject['message'] = 'Loja ID ('.$objectID.') alterado status';
+                if(strtoupper($objectStatus) == 'S'){
+                    $responseObject['message'] = 'Loja ID ('.$objectID.') habilitada';
+                } else {
+                    $responseObject['message'] = 'Loja ID ('.$objectID.') desabilitada';
+                }
 
                 unset($store);
-
                 echo json_encode($responseObject);
                 return;
-
             } else {
                 $responseObject['success'] = false;
                 $responseObject['message'] = 'Loja ID ('.$objectID.') erro ao alterar o status!';
 
                 unset($store);
-
                 echo json_encode($responseObject);
                 return;
             }

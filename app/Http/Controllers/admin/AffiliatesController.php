@@ -194,33 +194,18 @@ class AffiliatesController extends Controller
 
             $affiliate = mdAffiliates::where('id', $objectID)->first();
 
-            //$allStores = mdAffiliates::find($affiliate->id)->allStoresByAffiliate;
-
             $affiliate->alterStatusManual   = true;
             $affiliate->status              = $objectStatus;
 
             if($affiliate->save()){
-
-                /*for ($i=0; $i < count($allStores); $i++ ){
-                    $allStores[$i]->status = $objectStatus;
-
-                    if(!$allStores[$i]->save()){
-                        $responseObject['success'] = false;
-                        $responseObject['message'] = 'Loja ID ('.$allStores[$i]->id.') erro ao alterar o status!';
-
-                        unset($affiliate);
-
-                        echo json_encode($responseObject);
-                        return;
-                    }
-
-                }*/
-
                 $responseObject['success'] = true;
-                $responseObject['message'] = 'Afiliado ID ('.$objectID.') alterado status';
+                if(strtoupper($objectStatus) == 'S'){
+                    $responseObject['message'] = 'Afiliado ID ('.$objectID.') habilitado';
+                } else {
+                    $responseObject['message'] = 'Afiliado ID ('.$objectID.') desabilitado';
+                }
 
                 unset($affiliate);
-
                 echo json_encode($responseObject);
                 return;
 
@@ -229,7 +214,6 @@ class AffiliatesController extends Controller
                 $responseObject['message'] = 'Afiliado ID ('.$objectID.') erro ao alterar o status!';
 
                 unset($affiliate);
-
                 echo json_encode($responseObject);
                 return;
             }

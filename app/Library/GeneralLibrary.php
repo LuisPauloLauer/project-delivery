@@ -14,6 +14,7 @@ class GeneralLibrary
 {
     public function storeSelectedByUser($pNotExcept = false )
     {
+        $storeUserAdmId = 0;
 
         if(Session::has('StoresUserAdm')){
             foreach(Session::get('StoresUserAdm') as $store){

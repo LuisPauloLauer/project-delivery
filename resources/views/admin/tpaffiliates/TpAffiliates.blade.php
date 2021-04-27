@@ -133,6 +133,8 @@
     <script src="{{ asset('admin/adminLTE/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
     <!-- Bootstrap Switch -->
     <script src="{{ asset('admin/adminLTE/plugins/bootstrap-switch/js/bootstrap-switch.js') }}"></script>
+    <!-- Options components default -->
+    <script src="{{ asset('admin/node_modules/js/option-components-default.js') }}"></script>
     <script>
         $(document).ready(function () {
 
@@ -176,14 +178,13 @@
             $('.bootstrap-switch-id-ckbstatus').on('switchChange.bootstrapSwitch', function (event, state) {
 
                 var object_id = $(this).data("objectid");
+                let elementdiv = $(this);
 
                 if(state){
                     var objStatus = 'S';
                 }else{
                     var objStatus = 'N';
                 }
-
-                //var inputSwitch = $(this).find( "input:checkbox" );
 
                 $.ajax({
 
@@ -198,9 +199,15 @@
                     },
                     dataType: "json",
                     success : function (response) {
-                        if(response.success === false){
-                            alert(response.message);
-                            window.location.reload();
+                        if(response.success){
+                            toastr.success(response.message);
+                        } else {
+                            if(state){
+                                elementdiv.find('input[type="checkbox"]').bootstrapSwitch('state', false, true);
+                            }else{
+                                elementdiv.find('input[type="checkbox"]').bootstrapSwitch('state', true, true);
+                            }
+                            toastr.error(response.message);
                         }
                     }
                 });

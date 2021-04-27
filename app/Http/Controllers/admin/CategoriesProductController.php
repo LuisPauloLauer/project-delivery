@@ -278,18 +278,24 @@ class CategoriesProductController extends Controller
 
             $categoriesproduct = mdCategoriesProduct::where('id', $objectID)->first();
 
-            if (!$this->generalLibrary->isUserOfStoreSelected()) {
+            if ($categoriesproduct->store != $this->generalLibrary->storeSelectedByUser(true)) {
                 $responseObject['success'] = false;
-                $responseObject['message'] = 'Usuário não pertence à loja!';
+                $responseObject['message'] = 'Usuário não pertence à loja da categoria!';
                 echo json_encode($responseObject);
                 return;
             }
 
-            $categoriesproduct->status = $objectStatus;
+            $categoriesproduct->alterStatusManual   = true;
+            $categoriesproduct->status              = $objectStatus;
 
             if($categoriesproduct->save()){
                 $responseObject['success'] = true;
-                $responseObject['message'] = 'Kit id ('.$objectID.') alterado status';
+                if(strtoupper($objectStatus) == 'S'){
+                    $responseObject['message'] = 'Categoria id ('.$objectID.') habilitada para venda';
+                } else {
+                    $responseObject['message'] = 'Categoria id ('.$objectID.') desabilitada para venda';
+                }
+
 
                 unset($categoriesproduct);
 
@@ -297,7 +303,7 @@ class CategoriesProductController extends Controller
                 return;
             } else {
                 $responseObject['success'] = false;
-                $responseObject['message'] = 'Kit id ('.$objectID.') erro ao alterar o status!';
+                $responseObject['message'] = 'Categoria id ('.$objectID.') erro ao alterar o status!';
 
                 unset($categoriesproduct);
 

@@ -204,11 +204,15 @@ class SegmentsController extends Controller
             $segment = mdSegments::where('id', $objectID)->first();
 
             $segment->alterStatusManual = true;
-            $segment->status = $objectStatus;
+            $segment->status            = $objectStatus;
 
             if($segment->save()){
                 $responseObject['success'] = true;
-                $responseObject['message'] = 'Segmento ID ('.$objectID.') alterado status';
+                if(strtoupper($objectStatus) == 'S'){
+                    $responseObject['message'] = 'Segmento ID ('.$objectID.') habilitado';
+                } else {
+                    $responseObject['message'] = 'Segmento ID ('.$objectID.') desabilitado';
+                }
 
                 unset($segment);
 

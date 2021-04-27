@@ -56,6 +56,7 @@ mix
     .scripts('resources/views/admin/node_modules/js/jquery.mask.min.js', 'public/admin/node_modules/js/jquery.mask.min.js')
     .scripts('resources/views/admin/node_modules/js/chosen.jquery.min.js', 'public/admin/node_modules/js/chosen.jquery.min.js')
     .scripts('resources/views/admin/node_modules/js/image-uploader.js', 'public/admin/node_modules/js/image-uploader.js')
+    .scripts('resources/views/admin/node_modules/js/option-components-default.js', 'public/admin/node_modules/js/option-components-default.js')
 
     /*
         Validations de forms and rules

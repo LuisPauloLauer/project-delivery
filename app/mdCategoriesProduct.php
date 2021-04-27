@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 class mdCategoriesProduct extends Model
 {
     protected $table = 'categoriesproduct';
+    public $alterStatusManual = false;
 
     /**
      * The attributes that are mass assignable.
@@ -23,6 +24,34 @@ class mdCategoriesProduct extends Model
     {
         $this->attributes['name'] = $value;
         $this->attributes['slug'] = Str::slug($value);
+    }
+
+    public function setStatusAttribute($value)
+    {
+        $this->attributes['status'] = $value;
+
+        if($this->alterStatusManual){
+
+            $kits = $this->allKitsByCategoriesProduct()->get();
+
+            for ($i=0; $i < count($kits); $i++ ){
+                $kit =  $kits[$i];
+                //$kit->alterStatusManual   = true;
+                $kit->status              = $this->attributes['status'];
+
+                try {
+                    if(!$kit->save()){
+                        throw new \ErrorException('Erro ao alterar o status da loja ID ('.$kits[$i]->id.').');
+                    }
+                } catch (\Exception $exception) {
+                    throw new \ErrorException('Erro ao alterar o status da loja ID ('.$kits[$i]->id.').');
+                } finally {
+                    unset($kit);
+                }
+
+            }
+        }
+
     }
 
     /*public function allStoresByCategoriesProduct()

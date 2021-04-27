@@ -25,6 +25,7 @@
     "/admin/node_modules/js/jquery.mask.min.js": "/admin/node_modules/js/jquery.mask.min.js",
     "/admin/node_modules/js/chosen.jquery.min.js": "/admin/node_modules/js/chosen.jquery.min.js",
     "/admin/node_modules/js/image-uploader.js": "/admin/node_modules/js/image-uploader.js",
+    "/admin/node_modules/js/option-components-default.js": "/admin/node_modules/js/option-components-default.js",
     "/admin/node_modules/validation/validate_zipcode.js": "/admin/node_modules/validation/validate_zipcode.js",
     "/site/node_modules/css/master-style.css": "/site/node_modules/css/master-style.css",
     "/site/node_modules/js/jquery.js": "/site/node_modules/js/jquery.js",

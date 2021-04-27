@@ -128,10 +128,13 @@ class CategoriesStoreController extends Controller
 
             if($categoriesstore->save()){
                 $responseObject['success'] = true;
-                $responseObject['message'] = 'Categoria ID ('.$objectID.') alterado status';
+                if(strtoupper($objectStatus) == 'S'){
+                    $responseObject['message'] = 'Categoria ID ('.$objectID.') habilitada';
+                } else {
+                    $responseObject['message'] = 'Categoria ID ('.$objectID.') desabilitada';
+                }
 
                 unset($categoriesstore);
-
                 echo json_encode($responseObject);
                 return;
             } else {
@@ -139,7 +142,6 @@ class CategoriesStoreController extends Controller
                 $responseObject['message'] = 'Categoria ID ('.$objectID.') erro ao alterar o status!';
 
                 unset($categoriesstore);
-
                 echo json_encode($responseObject);
                 return;
             }
