@@ -36,17 +36,34 @@ class mdCategoriesProduct extends Model
 
             for ($i=0; $i < count($kits); $i++ ){
                 $kit =  $kits[$i];
-                //$kit->alterStatusManual   = true;
-                $kit->status              = $this->attributes['status'];
+                $kit->status = $this->attributes['status'];
 
                 try {
                     if(!$kit->save()){
-                        throw new \ErrorException('Erro ao alterar o status da loja ID ('.$kits[$i]->id.').');
+                        throw new \ErrorException('Erro ao alterar o status do Kit ID ('.$kits[$i]->id.').');
                     }
                 } catch (\Exception $exception) {
-                    throw new \ErrorException('Erro ao alterar o status da loja ID ('.$kits[$i]->id.').');
+                    throw new \ErrorException('Erro ao alterar o status do Kit ID ('.$kits[$i]->id.').');
                 } finally {
                     unset($kit);
+                }
+
+            }
+
+            $products = $this->allProductsByCategoriesProduct()->get();
+
+            for ($i=0; $i < count($products); $i++ ){
+                $product =  $products[$i];
+                $product->status = $this->attributes['status'];
+
+                try {
+                    if(!$product->save()){
+                        throw new \ErrorException('Erro ao alterar o status do Produto ID ('.$products[$i]->id.').');
+                    }
+                } catch (\Exception $exception) {
+                    throw new \ErrorException('Erro ao alterar o status do Produto ID ('.$products[$i]->id.').');
+                } finally {
+                    unset($product);
                 }
 
             }
@@ -62,6 +79,17 @@ class mdCategoriesProduct extends Model
     public function allKitsByCategoriesProduct()
     {
         return $this->hasMany(mdKits::class, 'category_product', 'id');
+    }
+
+    public function pesqKitsByCategoryProduct($pStatus = 'S', $pKit = null, $pOperator = '=')
+    {
+        $pStatus = strtoupper($pStatus);
+
+        if(is_null($pKit)){
+            return $kits = $this->allKitsByCategoriesProduct()->where('kits.status', $pStatus);
+        } else {
+            return $kits = $this->allKitsByCategoriesProduct()->where('kits.status', $pStatus)->where('kits.id', $pOperator, $pKit);
+        }
     }
 
     public function pesqKitsByCategoriesProduct(mdStores $store, $pStatus = 'S', $pExistsProduct = false)
@@ -95,6 +123,17 @@ class mdCategoriesProduct extends Model
     public function allProductsByCategoriesProduct()
     {
         return $this->hasMany(mdProducts::class, 'category_product', 'id');
+    }
+
+    public function pesqProductsByCategoryProduct($pStatus = 'S', $pProduct = null, $pOperator = '=')
+    {
+        $pStatus = strtoupper($pStatus);
+
+        if(is_null($pProduct)){
+            return $products = $this->allProductsByCategoriesProduct()->where('products.status', $pStatus);
+        } else {
+            return $products = $this->allProductsByCategoriesProduct()->where('products.status', $pStatus)->where('products.id', $pOperator, $pProduct);
+        }
     }
 
     public function pesqProductsByCategoriesProduct(mdStores $store, $pStatus = 'S')

@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 class mdProducts extends Model
 {
     protected $table = 'products';
+    public $alterStatusManual = false;
 
     /**
      * The attributes that are mass assignable.
@@ -27,6 +28,54 @@ class mdProducts extends Model
     public function setAmountAttribute($value)
     {
         $this->attributes['amount'] = preg_replace('/\D+/', '', $value);
+    }
+
+    public function setStatusAttribute($value)
+    {
+        $this->attributes['status'] = $value;
+
+        if($this->alterStatusManual){
+            if($this->attributes['status'] == 'N'){
+
+                $productsByCategoryProduct = mdCategoriesProduct::find($this->attributes['category_product'])->pesqProductsByCategoryProduct('S', $this->id, '<>')->get();
+
+                if(count($productsByCategoryProduct) == 0){
+                    $categoriesProduct = $this->pesqCategoryProduct()->first();
+
+                    if($categoriesProduct->status == 'S'){
+                        $categoriesProduct->status = $this->attributes['status'];
+
+                        try {
+                            if(!$categoriesProduct->save()){
+                                throw new \ErrorException('Erro ao alterar o status da Categoria ID ('.$categoriesProduct->id.').');
+                            }
+                        } catch (\Exception $exception) {
+                            throw new \ErrorException('Erro ao alterar o status da Categoria ID ('.$categoriesProduct->id.').');
+                        } finally {
+                            unset($categoriesProduct);
+                        }
+                    }
+                }
+
+            } else {
+                $categoriesProduct = $this->pesqCategoryProduct()->first();
+
+                if($categoriesProduct->status == 'N'){
+                    $categoriesProduct->status = $this->attributes['status'];
+                    try {
+                        if(!$categoriesProduct->save()){
+                            throw new \ErrorException('Erro ao alterar o status da Categoria ID ('.$categoriesProduct->id.').');
+                        }
+                    } catch (\Exception $exception) {
+                        throw new \ErrorException('Erro ao alterar o status da Categoria ID ('.$categoriesProduct->id.').');
+                    } finally {
+                        unset($categoriesProduct);
+                    }
+                }
+
+            }
+        }
+
     }
 
     public function getAmountAttribute()

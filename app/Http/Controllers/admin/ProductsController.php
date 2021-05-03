@@ -48,8 +48,6 @@ class ProductsController extends Controller
 
             $Store = mdStores::where('status', 'S')->where('id', $this->generalLibrary->storeSelectedByUser())->first();
 
-            // $RelStoresCategoriesProduct = mdRelStoresCategoriesProduct::select('category_product')->where('store', $this->generalLibrary->storeSelectedByUser())->groupBy('category_product')->get();
-
             $CategoriesProduct = mdCategoriesProduct::where('store', $this->generalLibrary->storeSelectedByUser())->get();
 
             $Kits = mdKits::where('status', 'S')->where('store', $this->generalLibrary->storeSelectedByUser())->orderBy('store', 'asc')->orderBy('id', 'asc')->get();
@@ -118,29 +116,6 @@ class ProductsController extends Controller
                     }
                 }
 
-                // Old Upload of Images
-                /*if ($request->hasFile('imagen')) {
-                    $imagens = $request->file('imagen');
-
-                    for ($i = 0; $i < count($imagens); $i++) {
-
-                        $imagensProducts = new mdImagensProducts();
-                        $imagensProducts->product = $Product->id;
-                        $imagensProducts->store = $Product->store;
-
-                        try {
-                            $imagensProducts->path_image = FilesControl::saveImage($imagens[$i], $imagens[$i], 'products/store_id_' . $Product->store, $Product->id, 1);
-                        } catch (\Exception $exception) {
-                            $imagensProducts->path_image = null;
-                            return back()->with('error', 'Erro Produto ID: (' . $Product->id . ') ' . $exception->getMessage());
-                        } finally {
-                            $imagensProducts->save();
-                        }
-
-                        unset($imagensProducts);
-                    }
-                } */
-
                 // Upload of Images
                 if($request->hasFile('imagen')){
                     $imagens = $request->file('imagen');
@@ -207,8 +182,6 @@ class ProductsController extends Controller
             if ($this->generalLibrary->storeSelectedByUser() == $product->store) {
 
                 $Store = mdStores::where('id', $product->store)->first();
-
-                // $RelStoresCategoriesProduct = mdRelStoresCategoriesProduct::select('category_product')->where('store', $this->generalLibrary->storeSelectedByUser())->groupBy('category_product')->get();
 
                 $CategoriesProduct = mdCategoriesProduct::where('store', $this->generalLibrary->storeSelectedByUser())->get();
 
@@ -311,28 +284,6 @@ class ProductsController extends Controller
                     }
 
                 }
-
-                // Old Upload of Images
-                /*if($request->hasFile('imagen')){
-                    $imagens = $request->file('imagen');
-
-                    for ($i = 0; $i < count($imagens); $i++){
-
-                        $imagensProducts = new mdImagensProducts();
-                        $imagensProducts->product = $product->id;
-                        $imagensProducts->store = $product->store;
-
-                        try {
-                            $imagensProducts->path_image = FilesControl::saveImage($imagens[$i], $imagens[$i],'products/store_id_'.$product->store,$product->id,1);
-                        } catch (\Exception $exception) {
-                            $imagensProducts->path_image = null;
-                            return back()->with('error','Erro Produto ID: ('.$product->id.') '.$exception->getMessage());
-                        }finally{
-                            $imagensProducts->save();
-                        }
-                        unset($imagensProducts);
-                    }
-                }*/
 
                 // Upload of Images
                 if($request->hasFile('imagen')){
@@ -444,13 +395,24 @@ class ProductsController extends Controller
         if(mdProducts::where('id', $objectID)->exists()) {
 
             $product = mdProducts::where('id', $objectID)->first();
-            //mdKits::findOrFail($objectID);
-            //mdKits::where('id', $objectID)->first();
-            $product->status = $objectStatus;
+
+            if ($product->store != $this->generalLibrary->storeSelectedByUser(true)) {
+                $responseObject['success'] = false;
+                $responseObject['message'] = 'Usuário não pertence à loja do Produto!';
+                echo json_encode($responseObject);
+                return;
+            }
+
+            $product->alterStatusManual   = true;
+            $product->status              = $objectStatus;
 
             if($product->save()){
                 $responseObject['success'] = true;
-                $responseObject['message'] = 'Produto id ('.$objectID.') alterado status';
+                if(strtoupper($objectStatus) == 'S'){
+                    $responseObject['message'] = 'Produto id ('.$objectID.') habilitado para venda';
+                } else {
+                    $responseObject['message'] = 'Produto id ('.$objectID.') desabilitado para venda';
+                }
 
                 unset($product);
 
@@ -488,10 +450,6 @@ class ProductsController extends Controller
                     ->orderBy('products.n_order', 'asc')
                     ->limit(1500)->get();
 
-              //  dd($Products);
-
-                // $RelStoresCategoriesProduct = mdRelStoresCategoriesProduct::select('category_product')->where('store', $this->generalLibrary->storeSelectedByUser())->groupBy('category_product')->get();
-
                 $CategoriesProduct = mdCategoriesProduct::where('store', $this->generalLibrary->storeSelectedByUser())->get();
 
                 return view('admin.products.Products', [
@@ -506,8 +464,6 @@ class ProductsController extends Controller
         } else if ($pesqdefault == 'index'){
 
             if ($this->generalLibrary->isUserOfStoreSelected()) {
-
-                // $RelStoresCategoriesProduct = mdRelStoresCategoriesProduct::select('category_product')->where('store', $this->generalLibrary->storeSelectedByUser())->groupBy('category_product')->get();
 
                 $CategoriesProduct = mdCategoriesProduct::where('store', $this->generalLibrary->storeSelectedByUser())->get();
 
@@ -534,8 +490,6 @@ class ProductsController extends Controller
         } else {
             $statusckbFilterObject = false;
         }
-
-        // $RelStoresCategoriesProduct = mdRelStoresCategoriesProduct::select('category_product')->where('store', $this->generalLibrary->storeSelectedByUser())->groupBy('category_product')->get();
 
         $CategoriesProduct = mdCategoriesProduct::where('store', $this->generalLibrary->storeSelectedByUser())->get();
 

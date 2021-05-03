@@ -33,7 +33,7 @@ class KitsController extends Controller
      */
     public function index($pesqdefault = false)
     {
-
+        //
     }
 
     /**
@@ -46,8 +46,6 @@ class KitsController extends Controller
         if ($this->generalLibrary->isUserOfStoreSelected()) {
 
             $Store = mdStores::where('status', 'S')->where('id', $this->generalLibrary->storeSelectedByUser())->first();
-
-            // $RelStoresCategoriesProduct = mdRelStoresCategoriesProduct::select('category_product')->where('store', $this->generalLibrary->storeSelectedByUser())->groupBy('category_product')->get();
 
             $CategoriesProduct = mdCategoriesProduct::where('store', $this->generalLibrary->storeSelectedByUser())->get();
 
@@ -99,30 +97,6 @@ class KitsController extends Controller
                 $Kit->description = $request->description;
 
                 if($Kit->save()){
-
-                    // Old Upload of Images
-                    /*if($request->hasFile('imagen')){
-                        $imagens = $request->file('imagen');
-                        //$n = null;
-                        for ($i = 0; $i < count($imagens); $i++){
-
-                            //$n = $n.' '.strval($i);
-
-                            $imagensKits = new mdImagensKits();
-                            $imagensKits->kit = $Kit->id;
-                            $imagensKits->store = $Kit->store;
-
-                            try {
-                                $imagensKits->path_image = FilesControl::saveImage($imagens[$i], $imagens[$i],'kits/store_id_'.$Kit->store, $Kit->id,1);
-                            } catch (\Exception $exception) {
-                                $imagensKits->path_image = null;
-                                return back()->with('error','Erro Kit ID: ('.$Kit->id.') '.$exception->getMessage());
-                            }finally{
-                                $imagensKits->save();
-                            }
-                            unset($imagensKits);
-                        }
-                    }*/
 
                     // Upload of Images
                     if($request->hasFile('imagen')){
@@ -191,8 +165,6 @@ class KitsController extends Controller
         if ($this->generalLibrary->isUserOfStoreSelected()) {
             if ($this->generalLibrary->storeSelectedByUser() == $kit->store) {
                 $Store = mdStores::where('id', $kit->store)->first();
-
-                // $RelStoresCategoriesProduct = mdRelStoresCategoriesProduct::select('category_product')->where('store', $this->generalLibrary->storeSelectedByUser())->groupBy('category_product')->get();
 
                 $CategoriesProduct = mdCategoriesProduct::where('store', $this->generalLibrary->storeSelectedByUser())->get();
 
@@ -286,29 +258,6 @@ class KitsController extends Controller
                         }
 
                     }
-
-                    // old Upload of Images
-                    /*if($request->hasFile('imagen')){
-                        $imagens = $request->file('imagen');
-
-                        for ($i = 0; $i < count($imagens); $i++){
-
-                            $imagensKits = new mdImagensKits();
-                            $imagensKits->kit = $kit->id;
-                            $imagensKits->store = $kit->store;
-
-                            try {
-                                $imagensKits->path_image = FilesControl::saveImage($imagens[$i], $imagens[$i],'kits/store_id_'.$kit->store,$kit->id,1);
-                            } catch (\Exception $exception) {
-                                $imagensKits->path_image = null;
-                                return back()->with('error','Erro Kit ID: ('.$kit->id.') '.$exception->getMessage());
-                            }finally{
-                                $imagensKits->save();
-                            }
-
-                            unset($imagensKits);
-                        }
-                    }*/
 
                     // Upload of Images
                     if($request->hasFile('imagen')){
@@ -425,25 +374,23 @@ class KitsController extends Controller
 
             $kit = mdKits::where('id', $objectID)->first();
 
-            if (!$this->generalLibrary->isUserOfStoreSelected()) {
+            if ($kit->store != $this->generalLibrary->storeSelectedByUser(true)) {
                 $responseObject['success'] = false;
-                $responseObject['message'] = 'Usuário não pertence à loja!';
+                $responseObject['message'] = 'Usuário não pertence à loja do Kit!';
                 echo json_encode($responseObject);
                 return;
             }
 
-            if ($this->generalLibrary->storeSelectedByUser() != $kit->store) {
-                $responseObject['success'] = false;
-                $responseObject['message'] = 'Kit id (' . $objectID . ') não pertence à loja!';
-                echo json_encode($responseObject);
-                return;
-            }
-
-            $kit->status = $objectStatus;
+            $kit->alterStatusManual   = true;
+            $kit->status              = $objectStatus;
 
             if($kit->save()){
                 $responseObject['success'] = true;
-                $responseObject['message'] = 'Kit id ('.$objectID.') alterado status';
+                if(strtoupper($objectStatus) == 'S'){
+                    $responseObject['message'] = 'Kit id ('.$objectID.') habilitado para venda';
+                } else {
+                    $responseObject['message'] = 'Kit id ('.$objectID.') desabilitado para venda';
+                }
 
                 unset($kit);
 
@@ -480,10 +427,6 @@ class KitsController extends Controller
                                 ->orderBy('kits.n_order', 'asc')
                                 ->limit(1500)->get();
 
-                //dd($Kits);
-
-                // $RelStoresCategoriesProduct = mdRelStoresCategoriesProduct::select('category_product')->where('store', $this->generalLibrary->storeSelectedByUser())->groupBy('category_product')->get();
-
                 $CategoriesProduct = mdCategoriesProduct::where('store', $this->generalLibrary->storeSelectedByUser())->get();
 
                 return view('admin.kits.Kits', [
@@ -498,8 +441,6 @@ class KitsController extends Controller
         } else if ($pesqdefault == 'index'){
 
             if ($this->generalLibrary->isUserOfStoreSelected()) {
-
-                //$RelStoresCategoriesProduct = mdRelStoresCategoriesProduct::select('category_product')->where('store', $this->generalLibrary->storeSelectedByUser())->groupBy('category_product')->get();
 
                 $CategoriesProduct = mdCategoriesProduct::where('store', $this->generalLibrary->storeSelectedByUser())->get();
 
@@ -525,8 +466,6 @@ class KitsController extends Controller
         } else {
             $statusckbFilterObject = false;
         }
-
-        // $RelStoresCategoriesProduct = mdRelStoresCategoriesProduct::select('category_product')->where('store', $this->generalLibrary->storeSelectedByUser())->groupBy('category_product')->get();
 
         $CategoriesProduct = mdCategoriesProduct::where('store', $this->generalLibrary->storeSelectedByUser())->get();
 
