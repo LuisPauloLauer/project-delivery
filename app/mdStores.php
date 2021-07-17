@@ -118,6 +118,11 @@ class mdStores extends Model
         return number_format($this->attributes['minimum_order'],2);
     }
 
+    public function pesqCity()
+    {
+        return $this->belongsTo(mdCities::class, 'city', 'id');
+    }
+
     public static function pesqStoreOrderByAffiliate()
     {
         return self::where('status', 'S')->orderBy('affiliate','asc')->orderBy('id','asc')->get();
@@ -194,7 +199,7 @@ class mdStores extends Model
         return $this->hasMany(mdKits::class,'store','id');
     }
 
-    public function pesqKitsByStore($pStatus = 'S', $pCategoryProduct = null, $pExistsProduct = false)
+    public function pesqKitsByStore($pStatus = 'S', $pCategoryProduct = null, $pExistsProduct = false, $pOrderByField = null, $pOrderBy = 'asc')
     {
         $pStatus = strtoupper($pStatus);
 
@@ -205,9 +210,9 @@ class mdStores extends Model
         }
 
         if(!$pExistsProduct){
-            return $kits;
+            $kits;
         } else {
-            return $kits->select(
+            $kits->select(
                 'kits.*'
                 )->join('rel_kits_products', 'kits.id', '=', 'rel_kits_products.kit')
                 ->join('categoriesproduct', 'kits.category_product', '=', 'categoriesproduct.id')
@@ -219,9 +224,17 @@ class mdStores extends Model
                         ->where('products.status', 'S')
                         ->where('products.store', $this->id);
                 })
-                ->groupBy('kits.id')
-                ->orderBy('categoriesproduct.n_order', 'asc');
+                ->groupBy('kits.id');
         }
+
+        if(is_null($pOrderByField)){
+            $kits->orderBy('categoriesproduct.n_order', $pOrderBy);
+        }else{
+            $kits->orderBy('kits.'.$pOrderByField, $pOrderBy);
+        }
+
+        return $kits;
+
     }
 
     public function allProductsByStore()
@@ -229,7 +242,7 @@ class mdStores extends Model
         return $this->hasMany(mdProducts::class,'store','id');
     }
 
-    public function pesqProductsByStore($pStatus = 'S', $pCategoryProduct = null, $pJoinCategoryProduct = false)
+    public function pesqProductsByStore($pStatus = 'S', $pCategoryProduct = null, $pJoinCategoryProduct = false, $pOrderByField = null, $pOrderBy = 'asc')
     {
         $pStatus = strtoupper($pStatus);
 
@@ -240,13 +253,21 @@ class mdStores extends Model
         }
 
         if(!$pJoinCategoryProduct){
-            return $products;
+             $products;
         } else {
-            return $products->select(
+             $products->select(
                     'products.*'
             )->join('categoriesproduct', 'products.category_product', '=', 'categoriesproduct.id')
-            ->where('categoriesproduct.status', $pStatus)
-            ->orderBy('categoriesproduct.n_order', 'asc');
+            ->where('categoriesproduct.status', $pStatus);
         }
+
+        if(is_null($pOrderByField)){
+            $products->orderBy('categoriesproduct.n_order', $pOrderBy);
+        }else{
+            $products->orderBy('products.'.$pOrderByField, $pOrderBy);
+        }
+
+        return $products;
+
     }
 }

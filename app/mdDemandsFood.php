@@ -14,14 +14,12 @@ class mdDemandsFood extends Model
         return round($this->attributes['total_amount'], 4);
     }
 
-    public function addDemandOffShopCart($pUserSite, $pTypeDelivery, $pInformationPayment, $pKits = null, $pProducts = null, &$pmessageError)
+    public function addDemandOffShopCart($pIDUserSite, $pTypeDelivery, $pInformationPayment, $pKits = null, $pProducts = null, &$pmessageError)
     {
         $subTotalPrice = 0;
         $totalAmount = 0;
 
         $statusDemand = mdStatusDemandsFood::select('id')->where('type', 'included')->first();
-
-       // dd($statusDemand->id);
 
         if($pKits){
             foreach($pKits as $Kit){
@@ -35,11 +33,12 @@ class mdDemandsFood extends Model
 
         $this->attributes['status']             = $statusDemand->id;
         $this->attributes['store']              = $store;
-        $this->attributes['user_site']          = $pUserSite;
+        $this->attributes['user_site']          = $pIDUserSite;
         $this->attributes['type_deliver']       = $pTypeDelivery;
         $this->attributes['type_payment']       = $pInformationPayment['typePayment'];
         $this->attributes['invoice_number']     = $pInformationPayment['invoiceNumberPayment'];
         $this->attributes['currency_payment']   = $pInformationPayment['currencyPayment'];
+        $this->attributes['money_change']       = $pInformationPayment['moneyChange'];
 
         if($pKits){
             foreach($pKits as $Kit){
@@ -74,18 +73,45 @@ class mdDemandsFood extends Model
         $this->attributes['shipping_discount_price']    = floatval ($pInformationPayment['shippingDiscountPricePayment']);
         $this->attributes['insurance_price']            = floatval ($pInformationPayment['insurancePricePayment']);
         $this->attributes['handling_fee_price']         = floatval ($pInformationPayment['handlingFeePricePayment']);
-        $this->attributes['total_price']                = floatval ($pInformationPayment['totalPayment']);
+
+        if(strtoupper($pInformationPayment['typePayment']) == 'PAYPAL'){
+            $this->attributes['total_price']                = floatval ($pInformationPayment['totalPayment']);
+        } else {
+            $this->attributes['total_price']                = $subTotalPrice;
+        }
 
         try {
             if($this->save()){
+
                 $saveItensStatus = $this->CreateDemandItensFood($this->attributes['id'], $pKits, $pProducts);
 
-                return $saveItensStatus;
+                $demandInfo = array(
+                    "id_demand" => $this->attributes['id'],
+                    "msg_erro_status" => $saveItensStatus,
+                    "msg_erro_text" => null
+                );
+
+                return $demandInfo;
+
             } else {
-                return false;
+
+                $demandInfo = array(
+                    "id_demand" => 0,
+                    "msg_erro_status" => false,
+                    "msg_erro_text" => null
+                );
+
+                return $demandInfo;
             }
         } catch (\Exception $exception) {
-            throw new \ErrorException('Erro ao incluir o pedido!!! message: '.$exception->getMessage());
+            //throw new \ErrorException('Erro ao incluir o pedido!!! message: '.$exception->getMessage());
+            $pmessageError = 'Erro ao incluir o pedido!!! message: '.$exception->getMessage();
+            $demandInfo = array(
+                "id_demand" => 0,
+                "msg_erro_status" => false,
+                "msg_erro_text" => $pmessageError
+            );
+            return $demandInfo;
         }
     }
 
@@ -158,11 +184,19 @@ class mdDemandsFood extends Model
                     try {
                         if(!$demandItens->save()){
                             $errorSaveItem = false;
+                        } else {
+                            if(is_null($ObjProduct->sold)){
+                                $ObjProduct->sold = $Product['qty'];
+                            } else {
+                                $ObjProduct->sold = $ObjProduct->sold + $Product['qty'];
+                            }
+                            $ObjProduct->save();
                         }
                     } catch (\Exception $exception) {
                         throw new \ErrorException('Erro ao incluir itens do pedido: ('.$pDemand.')');
                     }
 
+                    unset($ObjProduct);
                     unset($demandItens);
 
                 }

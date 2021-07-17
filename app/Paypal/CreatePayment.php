@@ -23,17 +23,37 @@ use PayPal\Exception\PayPalConnectionException;
 
 class CreatePayment extends PayPal
 {
+    private $methodPayment                  = 'paypal'; //Méthodo de pagamento
+    private $currencyPayment                = 'BRL';    //Moeda de pagamento
+    //private $totalPayment                 = 0;        //Valor total da fatura (pedido)
+    private $subTotalPayment                = 0;        //Valor total dos itens (pedido)
+    //second values of services
+    private $taxPricePayment                = 0;        //Valor do imposto
+    private $shippingPricePayment           = 0;        //Valor do frete
+    private $shippingDiscountPricePayment   = 0;        //Valor do disconto do frete
+    private $insurancePricePayment          = 0;        //Valor do seguro
+    private $handlingFeePricePayment        = 0;        //Valor da taxa de manuseio
+    private $descriptionPayment             = 'Pagamento por paypal';   //Descrição do pagamento
 
-    private $currencyPayment                = "BRL";    //Moeda de pagamento
-    private $totalPayment                   = 0;        //Valor total da fatura (pedido)
-    private $subTotalPayment                = 0;        //Valor total dos itens
-    private $taxPricePayment                = 1;        //Valor do imposto
-    private $shippingPricePayment           = 2;        //Valor do frete
-    private $shippingDiscountPricePayment   = 1;        //Valor do disconto do frete
-    private $insurancePricePayment          = 3;        //Valor do seguro
-    private $handlingFeePricePayment        = 4;        //Valor da taxa de manuseio
-
-    private $descriptionPayment             = "Teste Payment description"; //Descrição do pagamento
+    public function __construct($pInfoPayment)
+    {
+        if ($pInfoPayment['deliveryTypePayment']) {
+            parent::__construct();
+            $this->methodPayment                    = $pInfoPayment['deliveryTypePayment'];
+            /*
+            $this->currencyPayment                  = $pInfoPayment['currencyPayment'];
+            $this->totalPayment                     = $pInfoPayment['totalPayment'];
+            $this->subTotalPayment                  = $pInfoPayment['subTotalPayment'];
+            //second values of services
+            $this->taxPricePayment                  = $pInfoPayment['currencyPayment'];
+            $this->shippingPricePayment             = $pInfoPayment['totalPayment'];
+            $this->shippingDiscountPricePayment     = $pInfoPayment['subTotalPayment'];
+            $this->insurancePricePayment            = $pInfoPayment['subTotalPayment'];
+            $this->handlingFeePricePayment          = $pInfoPayment['subTotalPayment'];
+            $this->descriptionPayment               = $pInfoPayment['subTotalPayment'];
+            */
+        }
+    }
 
     public function create($pKits = null, $pProducts = null, &$pmessageError)
     {
@@ -45,8 +65,6 @@ class CreatePayment extends PayPal
                     if($Kit['productSellSubItems'][$i][$Kit['item']['id']]['qnty'] > 0 ){
 
                         $itens[$countItens] = new Item();
-
-                        //dd('teste');
 
                         $ObjKit = mdKits::where('id', $Kit['item']['id'])->where('status', 'S')->first();
 
@@ -95,27 +113,9 @@ class CreatePayment extends PayPal
             }
         }
 
-        /*
-        $item1 = new Item();
-        $item1->setName('Ground Coffee 40 oz')
-            ->setCurrency('BRL')
-            ->setQuantity(1)
-            ->setSku("123123")// Similar to `item_number` in Classic API
-            ->setPrice(15);
-
-        $item2 = new Item();
-        $item2->setName('Granola bars')
-            ->setCurrency('BRL')
-            ->setQuantity(5)
-            ->setSku("321321")// Similar to `item_number` in Classic API
-            ->setPrice(2); */
-
-        $itemList = new ItemList();
-        $itemList->setItems(
-            $itens
-        );
-
-        $payment = $this->Payment($itemList);
+        $objItemList = new ItemList();
+        $objItemList->setItems($itens);
+        $payment = $this->Payment($objItemList);
 
         try {
             $payment->create($this->apiContext);
@@ -132,11 +132,12 @@ class CreatePayment extends PayPal
      */
     protected function Payer(): Payer
     {
-        $payer = new Payer();
+        $objPayer = new Payer();
 
-        $payer->setPaymentMethod('paypal');
+        $objPayer->setPaymentMethod('paypal');
+        //$objPayer->setPaymentMethod('credit_card');
 
-        return $payer;
+        return $objPayer;
     }
 
     /**
@@ -144,10 +145,10 @@ class CreatePayment extends PayPal
      */
     protected function Details(): Details
     {
-        $details = new Details();
+        $objDetails = new Details();
 
         //Valor do imposto
-        $details->setTax($this->taxPricePayment)
+        $objDetails->setTax($this->taxPricePayment)
             //Valor do frete
             ->setShipping($this->shippingPricePayment)
             //Valor do disconto do frete
@@ -159,7 +160,7 @@ class CreatePayment extends PayPal
             //Valor total dos itens
             ->setSubtotal($this->subTotalPayment);
 
-        return $details;
+        return $objDetails;
     }
 
     /**
@@ -167,9 +168,9 @@ class CreatePayment extends PayPal
      */
     protected function Amount(): Amount
     {
-        $amount = new Amount();
+        $objAmount = new Amount();
 
-        $this->totalPayment = (
+        $totalPayment = (
             $this->taxPricePayment+
             $this->shippingPricePayment+
             (-$this->shippingDiscountPricePayment)+
@@ -178,32 +179,32 @@ class CreatePayment extends PayPal
             $this->subTotalPayment
         );
 
-        $amount->setCurrency($this->currencyPayment)
+        $objAmount->setCurrency($this->currencyPayment)
 
-            ->setTotal($this->totalPayment)
+            ->setTotal($totalPayment)
 
             ->setDetails($this->Details());
 
-        return $amount;
+        return $objAmount;
     }
 
     /**
-     * @param $itemList
+     * @param $pItemList
      * @return Transaction
      */
-    protected function Transaction($itemList): Transaction
+    protected function Transaction($pItemList): Transaction
     {
-        $transaction = new Transaction();
+        $objTransaction = new Transaction();
 
-        $transaction->setAmount($this->Amount())
+        $objTransaction->setAmount($this->Amount())
 
-            ->setItemList($itemList)
+            ->setItemList($pItemList)
 
             ->setDescription($this->descriptionPayment)
 
             ->setInvoiceNumber(uniqid());
 
-        return $transaction; //Id da transação
+        return $objTransaction; //Id da transação
     }
 
     /**
@@ -211,31 +212,31 @@ class CreatePayment extends PayPal
      */
     protected function RedirectUrls(): RedirectUrls
     {
-        $redirectUrls = new RedirectUrls();
+        $objRedirectUrls = new RedirectUrls();
 
-        $redirectUrls->setReturnUrl( $this->payPalConfig['url']['redirect'] )
+        $objRedirectUrls->setReturnUrl( $this->payPalConfig['url']['redirect'] )
 
             ->setCancelUrl( $this->payPalConfig['url']['cancel'] );
 
-        return $redirectUrls;
+        return $objRedirectUrls;
     }
 
     /**
-     * @param $itemList
+     * @param $pItemList
      * @return Payment
      */
-    protected function Payment( $itemList ): Payment
+    protected function Payment( $pItemList ): Payment
     {
-        $payment = new Payment();
+        $objPayment = new Payment();
 
-        $payment->setIntent("sale")
+        $objPayment->setIntent("sale")
 
             ->setPayer($this->Payer())
 
             ->setRedirectUrls($this->RedirectUrls())
 
-            ->setTransactions(array($this->Transaction($itemList)));
+            ->setTransactions(array($this->Transaction($pItemList)));
 
-        return $payment;
+        return $objPayment;
     }
 }
