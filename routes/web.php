@@ -56,7 +56,7 @@ Route::group(['middleware' => ['auth']], function(){
     Route::put('dashboard/store/perfil/edit/endereco/{store}', 'admin\StoresPerfilController@updateStorePerfilEndereco')->name('store.perfil.edit.endereco')->middleware('can:managerUsersAdm');
     Route::put('dashboard/store/perfil/edit/timedelivery/{store}', 'admin\StoresPerfilController@updateStorePerfilTimeDelivery')->name('store.perfil.edit.timedelivery')->middleware('can:managerUsersAdm');
     Route::put('dashboard/store/perfil/edit/payment/{store}', 'admin\StoresPerfilController@updateStorePerfilPayment')->name('store.perfil.edit.payment')->middleware('can:managerUsersAdm');
-    Route::post('dashboard/stores/perfil/change/activestore', 'admin\StoresPerfilController@changeActiveStore')->name('store.perfil.change.activestore')->middleware('can:managerUsersAdm');
+    Route::post('dashboard/store/perfil/change/activestore', 'admin\StoresPerfilController@changeActiveStore')->name('store.perfil.change.activestore')->middleware('can:managerUsersAdm');
 
     ////// ---------------  Acces of Users Store  --------------- /////
     Route::get('dashboard/usersadm/selectstore/{store}', 'admin\AdminController@SelectStoreDashboard')->name('usersadm.select.store')->middleware('can:managerProducts');
@@ -81,10 +81,11 @@ Route::group(['middleware' => ['auth']], function(){
     Route::post('dashboard/products/change/status', 'admin\ProductsController@changeStatus')->name('products.change.status')->middleware('can:managerProducts');
     Route::post('dashboard/categoriesproduct/products/change/order', 'admin\ProductsController@changeOrder')->name('products.change.order')->middleware('can:managerProducts');
 
+    Route::get('dashboard/store/mapregions', 'admin\StoresMapRegions@index')->name('store.mapregions')->middleware('can:managerUsersAdm');
+
     Route::get('dashboard/orders/{status}', 'admin\DemandsController@viewOrders')->name('view.orders')->middleware('can:managerProducts');
     Route::post('dashboard/orders/changestatus', 'admin\DemandsController@ordersChangeStatusType')->name('orders.change.status')->middleware('can:managerProducts');
     Route::get('dashboard/orders/print/{demand}', 'admin\DemandsController@ordersToPrint')->name('orders.print')->middleware('can:managerProducts');
-
 });
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++   SITE    ++++++++++++++++++++++++++++++++++++++++++++++++*/

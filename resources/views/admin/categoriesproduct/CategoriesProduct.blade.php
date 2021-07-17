@@ -38,8 +38,8 @@
     <!-- /.Modal Delete -->
 
     <!-- Modal order -->
-    <div id="app">
-        <table-draggable :categoriesproduct="{{ $listCategoriesProduct }}"></table-draggable>
+    <div id="modal-draggable-order">
+        <modal-draggable-order :categoriesproduct="{{ $listCategoriesProduct }}"></modal-draggable-order>
     </div>
     <!-- Modal order -->
 
@@ -152,6 +152,11 @@
     <!-- Options components default -->
     <script src="{{ asset('admin/node_modules/js/option-components-default.js') }}"></script>
     <script>
+        //vue js
+        const modalDraggableOrder = new Vue({
+            el: '#modal-draggable-order'
+        });
+
         $(document).ready(function () {
 
             <!-- DataTables -->

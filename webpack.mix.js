@@ -24,6 +24,8 @@ mix
     .sass('resources/views/admin/node_modules/scss/style.scss', 'public/admin/node_modules/css/style.css')
     .scripts('node_modules/croppie/croppie.css', 'public/admin/node_modules/css/croppie.css')
     .scripts('node_modules/cropperjs/dist/cropper.min.css', 'public/admin/node_modules/css/cropper.css')
+    .scripts('node_modules/leaflet/dist/leaflet.css', 'public/admin/node_modules/css/leaflet.css')
+
 
     /*
         Styles css Components and masks and plugins
@@ -46,6 +48,7 @@ mix
     .scripts('node_modules/popper.js/dist/umd/popper.js', 'public/admin/node_modules/js/popper.js')
     .scripts('node_modules/croppie/croppie.js', 'public/admin/node_modules/js/croppie.js')
     .scripts('node_modules/cropperjs/dist/cropper.min.js', 'public/admin/node_modules/js/cropper.js')
+    .scripts('node_modules/leaflet/dist/leaflet.js', 'public/admin/node_modules/js/leaflet.js')
 
     /*
        Jquery Components and masks and plugins

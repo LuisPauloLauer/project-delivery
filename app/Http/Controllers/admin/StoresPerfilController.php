@@ -64,11 +64,22 @@ class StoresPerfilController extends Controller
 
             $store = mdStores::where('id', $objectID)->first();
 
+            if ($store->id != $this->generalLibrary->storeSelectedByUser(true)) {
+                $responseObject['success'] = false;
+                $responseObject['message'] = 'Usuário não pertence à loja selecionada!';
+                echo json_encode($responseObject);
+                return;
+            }
+
             $store->active_store_site = $objectStatus;
 
             if($store->save()){
                 $responseObject['success'] = true;
-                $responseObject['message'] = 'Loja ID ('.$objectID.') alterado status';
+                if(strtoupper($objectStatus) == 'S'){
+                    $responseObject['message'] = 'Loja id ('.$objectID.') habilitada para venda';
+                } else {
+                    $responseObject['message'] = 'Loja id ('.$objectID.') desabilitada para venda';
+                }
 
                 unset($store);
 

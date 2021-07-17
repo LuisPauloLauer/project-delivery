@@ -16,6 +16,7 @@ class UsersSite extends Migration
         Schema::create('UsersSite', function (Blueprint $table) {
             $table->id();
             $table->char('status',1)->default('N')->nullable(false);
+            $table->unsignedBigInteger('universitybuilding');
             $table->string('name')->nullable(false);
             $table->string('slug')->nullable(false);
             $table->char('cpf',11)->unique()->nullable();
@@ -29,6 +30,7 @@ class UsersSite extends Migration
             //$table->rememberToken();
             $table->string('remember_token')->unique()->nullable(false);
             $table->timestamps();
+            $table->foreign('universitybuilding')->references('id')->on('universitybuildings');
         });
     }
 

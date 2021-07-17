@@ -296,7 +296,6 @@ class CategoriesProductController extends Controller
                     $responseObject['message'] = 'Categoria id ('.$objectID.') desabilitada para venda';
                 }
 
-
                 unset($categoriesproduct);
 
                 echo json_encode($responseObject);

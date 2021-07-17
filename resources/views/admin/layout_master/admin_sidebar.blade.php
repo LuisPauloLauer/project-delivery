@@ -12,7 +12,8 @@ $pathImagens = \App\Library\FilesControl::getPathImages();
 
     <!-- Brand Logo -->
     <a href="{{ route('dashboard.home') }}" class="brand-link">
-        <img src="{{ url('admin/adminLTE/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <img src="{{ url('admin/adminLTE/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
+             class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">AdminLTE 3</span>
     </a>
 
@@ -23,12 +24,17 @@ $pathImagens = \App\Library\FilesControl::getPathImages();
             <div class="image">
                 @if(!is_null($UserAuth->path_image))
                     @if( ($UserAuth->tpuser == 1) || ($UserAuth->tpuser == 2) )
-                        <img src="{{ $pathImagens }}/usersAdm/administrator/{{ $UserAuth->id}}/small/{{ $UserAuth->path_image }}" class="img-circle elevation-2" alt="User Image">
+                        <img
+                            src="{{ $pathImagens }}/usersAdm/administrator/{{ $UserAuth->id}}/small/{{ $UserAuth->path_image }}"
+                            class="img-circle elevation-2" alt="User Image">
                     @else
-                        <img src="{{ $pathImagens }}/usersAdm/affiliate_id_{{$AffiliateStore->affiliate}}/{{ $UserAuth->id}}/small/{{ $UserAuth->path_image }}" class="img-circle elevation-2" alt="User Image">
+                        <img
+                            src="{{ $pathImagens }}/usersAdm/affiliate_id_{{$AffiliateStore->affiliate}}/{{ $UserAuth->id}}/small/{{ $UserAuth->path_image }}"
+                            class="img-circle elevation-2" alt="User Image">
                     @endif
                 @else
-                    <img src="{{ $pathImagens }}/../../files/images/no_photo.png" class="img-circle elevation-2" alt="User Image">
+                    <img src="{{ $pathImagens }}/../../files/images/no_photo.png" class="img-circle elevation-2"
+                         alt="User Image">
                 @endif
             </div>
             <div class="info">
@@ -53,6 +59,7 @@ $pathImagens = \App\Library\FilesControl::getPathImages();
                         || (Route::current()->getName() === 'kits.pesq') || (Route::current()->getName() === 'kits.search') || (Route::current()->getName() === 'kits.create') || (Route::current()->getName() === 'kits.edit')
                         || (Route::current()->getName() === 'products.pesq') || (Route::current()->getName() === 'products.search') || (Route::current()->getName() === 'products.create') || (Route::current()->getName() === 'products.edit')
                         || (Route::current()->getName() === 'store.perfil')
+                        || (Route::current()->getName() === 'store.mapregions')
                         ? 'menu-open' : ''
                         ) }}
                     ">
@@ -115,10 +122,14 @@ $pathImagens = \App\Library\FilesControl::getPathImages();
                                 <a href="{{ route('categoriesproduct.index') }}"
                                    class="nav-link {{ ((Route::current()->getName() === 'categoriesproduct.index') || (Route::current()->getName() === 'categoriesproduct.create') || (Route::current()->getName() === 'categoriesproduct.edit') ? 'active' : '') }}">
                                     <i class="far nav-icon">
-                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-journal-text" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
-                                            <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
-                                            <path fill-rule="evenodd" d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-journal-text"
+                                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+                                            <path
+                                                d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+                                            <path fill-rule="evenodd"
+                                                  d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
                                         </svg>
                                     </i>
                                     <p>Categoria Kits/Produtos</p>
@@ -128,10 +139,14 @@ $pathImagens = \App\Library\FilesControl::getPathImages();
                                 <a href="{{ route('kits.pesq', ['pesqdefault' => 'index']) }}"
                                    class="nav-link {{ ((Route::current()->getName() === 'kits.pesq') || (Route::current()->getName() === 'kits.search') || (Route::current()->getName() === 'kits.create') || (Route::current()->getName() === 'kits.edit') ? 'active' : '') }}">
                                     <i class="far nav-icon">
-                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-journal-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
-                                            <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
-                                            <path fill-rule="evenodd" d="M6.146 6.146a.5.5 0 0 1 .708 0L8 7.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 8l1.147 1.146a.5.5 0 0 1-.708.708L8 8.707 6.854 9.854a.5.5 0 0 1-.708-.708L7.293 8 6.146 6.854a.5.5 0 0 1 0-.708z"/>
+                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-journal-x"
+                                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+                                            <path
+                                                d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+                                            <path fill-rule="evenodd"
+                                                  d="M6.146 6.146a.5.5 0 0 1 .708 0L8 7.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 8l1.147 1.146a.5.5 0 0 1-.708.708L8 8.707 6.854 9.854a.5.5 0 0 1-.708-.708L7.293 8 6.146 6.854a.5.5 0 0 1 0-.708z"/>
                                         </svg>
                                     </i>
                                     <p>Kits</p>
@@ -141,9 +156,12 @@ $pathImagens = \App\Library\FilesControl::getPathImages();
                                 <a href="{{ route('products.pesq', ['pesqdefault' => 'index']) }}"
                                    class="nav-link {{ ((Route::current()->getName() === 'products.pesq') || (Route::current()->getName() === 'products.search') || (Route::current()->getName() === 'products.create') || (Route::current()->getName() === 'products.edit') ? 'active' : '') }}">
                                     <i class="far nav-icon">
-                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-journal" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
-                                            <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-journal"
+                                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+                                            <path
+                                                d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
                                         </svg>
                                     </i>
                                     <p>Produtos</p>
@@ -154,6 +172,13 @@ $pathImagens = \App\Library\FilesControl::getPathImages();
                                    class="nav-link {{ ((Route::current()->getName() === 'store.perfil') ? 'active' : '') }}">
                                     <i class="fas fa-store nav-icon"></i>
                                     <p>Dados Loja</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('store.mapregions') }}"
+                                   class="nav-link {{ ((Route::current()->getName() === 'store.mapregions') ? 'active' : '') }}">
+                                    <i class="fas fa-store nav-icon"></i>
+                                    <p>Regiões de entrega</p>
                                 </a>
                             </li>
                         @endcan
