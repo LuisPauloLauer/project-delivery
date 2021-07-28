@@ -8,7 +8,6 @@
 @endsection
 
 @section('content')
-
     <!-- Modal Delete -->
     <div id="idconfirmDeleteModal" class="modal fade" role="dialog">
         <div class="modal-dialog">

@@ -85,7 +85,7 @@ Route::group(['middleware' => ['auth']], function(){
 
     Route::get('dashboard/orders/{status}', 'admin\DemandsController@viewOrders')->name('view.orders')->middleware('can:managerProducts');
     Route::post('dashboard/orders/changestatus', 'admin\DemandsController@ordersChangeStatusType')->name('orders.change.status')->middleware('can:managerProducts');
-    Route::get('dashboard/orders/print/{demand}', 'admin\DemandsController@ordersToPrint')->name('orders.print')->middleware('can:managerProducts');
+    Route::get('dashboard/orders/print/{demands}', 'admin\DemandsController@ordersToPrint')->name('orders.print')->middleware('can:managerProducts');
 });
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++   SITE    ++++++++++++++++++++++++++++++++++++++++++++++++*/

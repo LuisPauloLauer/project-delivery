@@ -206,4 +206,32 @@ class mdDemandsFood extends Model
         return $errorSaveItem;
 
     }
+
+    public static function arrayOfDemands($pStringDemands)
+    {
+        $arrayDemands = [];
+        $countArrayDemands = 0;
+        for ($i = 0; $i < strlen($pStringDemands); $i++) {
+            $idDemand = '';
+            for ($j = $i; $j < strlen($pStringDemands); $j++) {
+                if ($pStringDemands[$j] <> ',') {
+                    $i++;
+                    $idDemand = $idDemand . $pStringDemands[$j];
+                } else {
+                    $i = $j;
+                    break;
+                }
+            }
+            $countArrayDemands++;
+
+            $demand = mdDemandsFood::findOrFail($idDemand);
+
+            $arrayDemands[$countArrayDemands] = array(
+                "demand_id" => $demand->id,
+                "demand_store" => $demand->store
+            );
+        }
+
+        return $arrayDemands;
+    }
 }

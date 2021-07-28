@@ -5,13 +5,6 @@
     <link rel="stylesheet" href="{{ asset('admin/adminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/adminLTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/adminLTE/plugins/icheck-bootstrap/icheck-bootstrap.css') }}">
-    <style>
-        a.disabled {
-            opacity: 0.5;
-            pointer-events: none;
-            cursor: default;
-        }
-    </style>
 @endsection
 
 @section('content')
