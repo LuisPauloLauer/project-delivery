@@ -14,7 +14,7 @@ use Mpdf\Mpdf;
 
 class DemandsController extends Controller
 {
-    //Demands controllerss
+    //Demands controller
     private $generalLibrary;
 
     public function __construct()
