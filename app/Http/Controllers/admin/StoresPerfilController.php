@@ -14,6 +14,7 @@ use App\mdStoresPaymentKeys;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class StoresPerfilController extends Controller
@@ -35,7 +36,17 @@ class StoresPerfilController extends Controller
         if($this->generalLibrary->isUserOfStoreSelected()){
 
             $Store = mdStores::where('id', $this->generalLibrary->storeSelectedByUser())->first();
-            $storePayment = mdStoresPayment::where('store', $Store->id)->get();
+            $storePayment = DB::table('stores_payment')->select(
+                'stores_payment.*',
+                'stores_payment_keys.type_payment_system as payment_id',
+                'stores_payment_keys.client_id',
+                'stores_payment_keys.client_secret'
+                )
+                ->leftJoin('stores_payment_keys', 'stores_payment.id', '=', 'stores_payment_keys.type_payment_system')
+                ->where('store', $Store->id)
+                ->orderBy('stores_payment.id', 'asc')
+                ->orderBy('stores_payment.store', 'asc')->get();
+            //dd($storePayment);
             $daysOfWeek = mdDaysOfWeek::where('language', 'PT-BR')->orderBy('sequence', 'asc')->get();
             $storeTime = mdDeliveryStoreTimes::where('store', $Store->id)->get();
             $pathFilesImages = FilesControl::getPathImages(true);
@@ -362,21 +373,23 @@ class StoresPerfilController extends Controller
 
             if (!is_null($request->moneystore)) {
                 $typePayment[$nPayments] = array(
-                    "typePaymentLocal"      => 'store',
-                    "typePaymentSystem"     => 'money',
-                    "typePaymentOrigin"     => 'money',
-                    "typePaymentName"       => 'money',
+                    "typePaymentLocal"      => 'loja',
+                    "typePaymentSystem"     => 'dinheiro',
+                    "typePaymentOrigin"     => 'dinheiro',
+                    "typePaymentName"       => 'dinheiro',
                     "typePaymentFlag"       => 'money',
+                    "typePaymentDescription" => 'Dinheiro',
                     "status"                => 'S'
                 );
                 $nPayments++;
             } else {
                 $typePayment[$nPayments] = array(
-                    "typePaymentLocal"      => 'store',
-                    "typePaymentSystem"     => 'money',
-                    "typePaymentOrigin"     => 'money',
-                    "typePaymentName"       => 'money',
+                    "typePaymentLocal"      => 'loja',
+                    "typePaymentSystem"     => 'dinheiro',
+                    "typePaymentOrigin"     => 'dinheiro',
+                    "typePaymentName"       => 'dinheiro',
                     "typePaymentFlag"       => 'money',
+                    "typePaymentDescription" => 'Dinheiro',
                     "status"                => 'N'
                 );
                 $nPayments++;
@@ -384,21 +397,23 @@ class StoresPerfilController extends Controller
 
             if (!is_null($request->debitmastercardstore)) {
                 $typePayment[$nPayments] = array(
-                    "typePaymentLocal"      => 'store',
-                    "typePaymentSystem"     => 'machine',
-                    "typePaymentOrigin"     => 'card',
-                    "typePaymentName"       => 'debit',
+                    "typePaymentLocal"      => 'loja',
+                    "typePaymentSystem"     => 'máquina',
+                    "typePaymentOrigin"     => 'cartão',
+                    "typePaymentName"       => 'débito',
                     "typePaymentFlag"       => 'mastercard',
+                    "typePaymentDescription" => 'Mastercard - Débito',
                     "status"                => 'S'
                 );
                 $nPayments++;
             } else {
                 $typePayment[$nPayments] = array(
-                    "typePaymentLocal"      => 'store',
-                    "typePaymentSystem"     => 'machine',
-                    "typePaymentOrigin"     => 'card',
-                    "typePaymentName"       => 'debit',
+                    "typePaymentLocal"      => 'loja',
+                    "typePaymentSystem"     => 'máquina',
+                    "typePaymentOrigin"     => 'cartão',
+                    "typePaymentName"       => 'débito',
                     "typePaymentFlag"       => 'mastercard',
+                    "typePaymentDescription" => 'Mastercard - Débito',
                     "status"                => 'N'
                 );
                 $nPayments++;
@@ -406,21 +421,23 @@ class StoresPerfilController extends Controller
 
             if (!is_null($request->debitvisastore)) {
                 $typePayment[$nPayments] = array(
-                    "typePaymentLocal"      => 'store',
-                    "typePaymentSystem"     => 'machine',
-                    "typePaymentOrigin"     => 'card',
-                    "typePaymentName"       => 'debit',
+                    "typePaymentLocal"      => 'loja',
+                    "typePaymentSystem"     => 'máquina',
+                    "typePaymentOrigin"     => 'cartão',
+                    "typePaymentName"       => 'débito',
                     "typePaymentFlag"       => 'visa',
+                    "typePaymentDescription" => 'Visa - Débito',
                     "status"                => 'S'
                 );
                 $nPayments++;
             } else {
                 $typePayment[$nPayments] = array(
-                    "typePaymentLocal"      => 'store',
-                    "typePaymentSystem"     => 'machine',
-                    "typePaymentOrigin"     => 'card',
-                    "typePaymentName"       => 'debit',
+                    "typePaymentLocal"      => 'loja',
+                    "typePaymentSystem"     => 'máquina',
+                    "typePaymentOrigin"     => 'cartão',
+                    "typePaymentName"       => 'débito',
                     "typePaymentFlag"       => 'visa',
+                    "typePaymentDescription" => 'Visa - Débito',
                     "status"                => 'N'
                 );
                 $nPayments++;
@@ -428,21 +445,23 @@ class StoresPerfilController extends Controller
 
             if (!is_null($request->debitelostore)) {
                 $typePayment[$nPayments] = array(
-                    "typePaymentLocal"      => 'store',
-                    "typePaymentSystem"     => 'machine',
-                    "typePaymentOrigin"     => 'card',
-                    "typePaymentName"       => 'debit',
+                    "typePaymentLocal"      => 'loja',
+                    "typePaymentSystem"     => 'máquina',
+                    "typePaymentOrigin"     => 'cartão',
+                    "typePaymentName"       => 'débito',
                     "typePaymentFlag"       => 'elo',
+                    "typePaymentDescription" => 'Elo - Débito',
                     "status"                => 'S'
                 );
                 $nPayments++;
             } else {
                 $typePayment[$nPayments] = array(
-                    "typePaymentLocal"      => 'store',
-                    "typePaymentSystem"     => 'machine',
-                    "typePaymentOrigin"     => 'card',
-                    "typePaymentName"       => 'debit',
+                    "typePaymentLocal"      => 'loja',
+                    "typePaymentSystem"     => 'máquina',
+                    "typePaymentOrigin"     => 'cartão',
+                    "typePaymentName"       => 'débito',
                     "typePaymentFlag"       => 'elo',
+                    "typePaymentDescription" => 'Elo - Débito',
                     "status"                => 'N'
                 );
                 $nPayments++;
@@ -450,21 +469,23 @@ class StoresPerfilController extends Controller
 
             if (!is_null($request->creditmastercardstore)) {
                 $typePayment[$nPayments] = array(
-                    "typePaymentLocal"      => 'store',
-                    "typePaymentSystem"     => 'machine',
-                    "typePaymentOrigin"     => 'card',
-                    "typePaymentName"       => 'credit',
+                    "typePaymentLocal"      => 'loja',
+                    "typePaymentSystem"     => 'máquina',
+                    "typePaymentOrigin"     => 'cartão',
+                    "typePaymentName"       => 'crédito',
                     "typePaymentFlag"       => 'mastercard',
+                    "typePaymentDescription" => 'Mastercard - Crédito',
                     "status"                => 'S'
                 );
                 $nPayments++;
             } else {
                 $typePayment[$nPayments] = array(
-                    "typePaymentLocal"      => 'store',
-                    "typePaymentSystem"     => 'machine',
-                    "typePaymentOrigin"     => 'card',
-                    "typePaymentName"       => 'credit',
+                    "typePaymentLocal"      => 'loja',
+                    "typePaymentSystem"     => 'máquina',
+                    "typePaymentOrigin"     => 'cartão',
+                    "typePaymentName"       => 'crédito',
                     "typePaymentFlag"       => 'mastercard',
+                    "typePaymentDescription" => 'Mastercard - Crédito',
                     "status"                => 'N'
                 );
                 $nPayments++;
@@ -472,21 +493,47 @@ class StoresPerfilController extends Controller
 
             if (!is_null($request->creditvisastore)) {
                 $typePayment[$nPayments] = array(
-                    "typePaymentLocal"      => 'store',
-                    "typePaymentSystem"     => 'machine',
-                    "typePaymentOrigin"     => 'card',
-                    "typePaymentName"       => 'credit',
+                    "typePaymentLocal"      => 'loja',
+                    "typePaymentSystem"     => 'máquina',
+                    "typePaymentOrigin"     => 'cartão',
+                    "typePaymentName"       => 'crédito',
                     "typePaymentFlag"       => 'visa',
+                    "typePaymentDescription" => 'Visa - Crédito',
                     "status"                => 'S'
                 );
                 $nPayments++;
             } else {
                 $typePayment[$nPayments] = array(
-                    "typePaymentLocal"      => 'store',
-                    "typePaymentSystem"     => 'machine',
-                    "typePaymentOrigin"     => 'card',
-                    "typePaymentName"       => 'credit',
+                    "typePaymentLocal"      => 'loja',
+                    "typePaymentSystem"     => 'máquina',
+                    "typePaymentOrigin"     => 'cartão',
+                    "typePaymentName"       => 'crédito',
                     "typePaymentFlag"       => 'visa',
+                    "typePaymentDescription" => 'Visa - Crédito',
+                    "status"                => 'N'
+                );
+                $nPayments++;
+            }
+
+            if (!is_null($request->creditelostore)) {
+                $typePayment[$nPayments] = array(
+                    "typePaymentLocal"      => 'loja',
+                    "typePaymentSystem"     => 'máquina',
+                    "typePaymentOrigin"     => 'cartão',
+                    "typePaymentName"       => 'crédito',
+                    "typePaymentFlag"       => 'elo',
+                    "typePaymentDescription" => 'Elo - Crédito',
+                    "status"                => 'S'
+                );
+                $nPayments++;
+            } else {
+                $typePayment[$nPayments] = array(
+                    "typePaymentLocal"      => 'loja',
+                    "typePaymentSystem"     => 'máquina',
+                    "typePaymentOrigin"     => 'cartão',
+                    "typePaymentName"       => 'crédito',
+                    "typePaymentFlag"       => 'elo',
+                    "typePaymentDescription" => 'Elo - Crédito',
                     "status"                => 'N'
                 );
                 $nPayments++;
@@ -499,6 +546,7 @@ class StoresPerfilController extends Controller
                     "typePaymentOrigin"     => 'paypal',
                     "typePaymentName"       => 'paypal',
                     "typePaymentFlag"       => 'paypal',
+                    "typePaymentDescription" => 'PayPal',
                     "status"                => 'S'
                 );
             } else {
@@ -508,6 +556,7 @@ class StoresPerfilController extends Controller
                     "typePaymentOrigin"     => 'paypal',
                     "typePaymentName"       => 'paypal',
                     "typePaymentFlag"       => 'paypal',
+                    "typePaymentDescription" => 'PayPal',
                     "status"                => 'N'
                 );
             }
@@ -523,32 +572,31 @@ class StoresPerfilController extends Controller
 
                     $storePayment = new mdStoresPayment();
 
-                    $storePayment->status               = $typePayment[$i]['status'];
-                    $storePayment->store                = $store->id;
-                    $storePayment->type_payment_local   = $typePayment[$i]['typePaymentLocal'];
-                    $storePayment->type_payment_system  = $typePayment[$i]['typePaymentSystem'];
-                    $storePayment->type_payment_origin  = $typePayment[$i]['typePaymentOrigin'];
-                    $storePayment->type_payment_name    = $typePayment[$i]['typePaymentName'];
-                    $storePayment->type_payment_flag    = $typePayment[$i]['typePaymentFlag'];
+                    $storePayment->status                       = $typePayment[$i]['status'];
+                    $storePayment->store                        = $store->id;
+                    $storePayment->type_payment_local           = $typePayment[$i]['typePaymentLocal'];
+                    $storePayment->type_payment_system          = $typePayment[$i]['typePaymentSystem'];
+                    $storePayment->type_payment_origin          = $typePayment[$i]['typePaymentOrigin'];
+                    $storePayment->type_payment_name            = $typePayment[$i]['typePaymentName'];
+                    $storePayment->type_payment_flag            = $typePayment[$i]['typePaymentFlag'];
+                    $storePayment->type_payment_description     = $typePayment[$i]['typePaymentDescription'];
 
                     if(!$storePayment->save()){
                         return back()->with('error','Erro ao salvar tipos de pagamentos!!!');
                     } else {
                         if($typePayment[$i]['typePaymentSystem'] == 'paypal'){
-
-                            $storePaymentKeysFind = mdStoresPayment::find($storePayment->id)->pesqPaymentKeys;
-
-                            if(count($storePaymentKeysFind) == 0 ){
-
+                            $storePaymentKeysFind = mdStoresPaymentKeys::where('type_payment_system', $storePayment->id)->first();
+                            if(!$storePaymentKeysFind){
                                 $storePaymentKeys = new mdStoresPaymentKeys();
-
                                 $storePaymentKeys->type_payment_system  = $storePayment->id;
-                                $storePaymentKeys->client_id            = $request->name;
-                                $storePaymentKeys->client_secret        = $request->name;
-
+                                $storePaymentKeys->client_id            = $request->clientPaypal;
+                                $storePaymentKeys->client_secret        = $request->secretPaypal;
                                 $storePaymentKeys->save();
+                            } else {
+                                $storePaymentKeysFind->client_id        = $request->clientPaypal;
+                                $storePaymentKeysFind->client_secret    = $request->secretPaypal;
+                                $storePaymentKeysFind->save();
                             }
-
                         }
                     }
 
@@ -564,31 +612,23 @@ class StoresPerfilController extends Controller
                                                             where('type_payment_flag', $typePayment[$i]['typePaymentFlag'])->first();
 
                     $storePayment->status               = $typePayment[$i]['status'];
-                    $storePayment->store                = $store->id;
-                    $storePayment->type_payment_local   = $typePayment[$i]['typePaymentLocal'];
-                    $storePayment->type_payment_system  = $typePayment[$i]['typePaymentSystem'];
-                    $storePayment->type_payment_origin  = $typePayment[$i]['typePaymentOrigin'];
-                    $storePayment->type_payment_name    = $typePayment[$i]['typePaymentName'];
-                    $storePayment->type_payment_flag    = $typePayment[$i]['typePaymentFlag'];
 
                     if(!$storePayment->save()){
                         return back()->with('error','Erro ao salvar tipos de pagamentos!!!');
                     } else {
                         if($typePayment[$i]['typePaymentSystem'] == 'paypal'){
-
-                            $storePaymentKeysFind = mdStoresPayment::find($storePayment->id)->pesqPaymentKeys;
-
-                            if(count($storePaymentKeysFind) == 0 ){
-
+                            $storePaymentKeysFind = mdStoresPaymentKeys::where('type_payment_system', $storePayment->id)->first();
+                            if(!$storePaymentKeysFind){
                                 $storePaymentKeys = new mdStoresPaymentKeys();
-
                                 $storePaymentKeys->type_payment_system  = $storePayment->id;
-                                $storePaymentKeys->client_id            = $request->name;
-                                $storePaymentKeys->client_secret        = $request->name;
-
+                                $storePaymentKeys->client_id            = $request->clientPaypal;
+                                $storePaymentKeys->client_secret        = $request->secretPaypal;
                                 $storePaymentKeys->save();
+                            } else {
+                                $storePaymentKeysFind->client_id        = $request->clientPaypal;
+                                $storePaymentKeysFind->client_secret    = $request->secretPaypal;
+                                $storePaymentKeysFind->save();
                             }
-
                         }
                     }
 

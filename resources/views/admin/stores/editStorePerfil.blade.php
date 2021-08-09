@@ -446,8 +446,18 @@
                                                             Crédito - Visa (Máquina)</label>
                                                     </div>
                                                 </div>
+                                                <div class="col">
+                                                    <div class="icheck-success d-inline">
+                                                        <input type="checkbox" id="idcreditelostore" name="creditelostore" value="creditelostore">
+                                                        <label for="idcreditelostore">
+                                                            <span style='margin-right:0.2em; display:inline-block;'>&nbsp</span>
+                                                            <img src="data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Crect%20y%3D%223%22%20width%3D%2224%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%232D2D2D%22%2F%3E%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M8.92924%2011.3641L4.78503%2013.1267C4.7786%2013.0562%204.77504%2012.9849%204.77504%2012.9128C4.77504%2011.619%205.83771%2010.5701%207.1486%2010.5701C7.85782%2010.5701%208.49434%2010.8773%208.92924%2011.3641ZM7.14863%208.81818C9.10417%208.81818%2010.7434%2010.1536%2011.1818%2011.951L9.50973%2012.6726L9.50934%2012.6691L7.7987%2013.4109L3.69505%2015.1818C3.25605%2014.5323%203%2013.752%203%2012.9128C3%2010.6513%204.85737%208.81818%207.14863%208.81818Z%22%20fill%3D%22%23FFFFFE%22%2F%3E%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M9.36363%2015.6821C8.05946%2017.247%206.33417%2017.4005%204.81818%2016.237L5.67471%2014.5907C6.53735%2015.2425%207.40394%2015.1368%208.27455%2014.2727L9.36363%2015.6821Z%22%20fill%3D%22%23FFFFFE%22%2F%3E%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M11.1917%2014.9842L11.1818%207H12.5872V14.7686C12.5872%2014.8431%2012.5957%2014.9088%2012.6866%2014.9467L13.9091%2015.4585L13.3583%2017L11.9262%2016.3478C11.3831%2016.1005%2011.1927%2015.7421%2011.1917%2014.9842Z%22%20fill%3D%22%23FFFFFE%22%2F%3E%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M16.6364%2014.5994C16.0782%2014.189%2015.7189%2013.5484%2015.7189%2012.828C15.7189%2012.1875%2016.0032%2011.6102%2016.4583%2011.2014L15.4966%209.72729C14.5299%2010.4517%2013.9091%2011.5709%2013.9091%2012.828C13.9091%2014.1829%2014.6298%2015.3783%2015.7281%2016.0909L16.6364%2014.5994Z%22%20fill%3D%22%232191C3%22%2F%3E%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M17.3811%2010.937C17.6237%2010.839%2017.8853%2010.7853%2018.158%2010.7853C19.1411%2010.7853%2019.9795%2011.4793%2020.3069%2012.4545L22.0909%2012.2872C21.6603%2010.2966%2020.0634%208.81818%2018.158%208.81818C17.6196%208.81818%2017.1062%208.93722%2016.6364%209.15144L17.3811%2010.937Z%22%20fill%3D%22%23FAEC32%22%2F%3E%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M20.2902%2013.3636C20.2305%2014.4872%2019.1973%2015.3817%2017.9313%2015.3817C17.7329%2015.3817%2017.5403%2015.3594%2017.3562%2015.3181L16.6364%2016.8147C17.0441%2016.9343%2017.4791%2017%2017.9313%2017C20.1736%2017%2022.001%2015.4082%2022.0909%2013.4146L20.2902%2013.3636Z%22%20fill%3D%22%23D0362B%22%2F%3E%3C%2Fsvg%3E">
+                                                            <span style='margin-right:0.2em; display:inline-block;'>&nbsp</span>
+                                                            Crédito - Elo (Máquina)</label>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="form-row">
+                                            <div class="form-row mt-5">
                                                 <div class="col">
                                                     <div class="text-center"><h5>Tipos de pagamentos do aplicativo</h5></div>
                                                     <hr class="mb-2">
@@ -468,12 +478,12 @@
                                             <div class="form-row">
                                                 <div class="col">
                                                     <label for="inputName">Client ID:</label>
-                                                    <input value="{{ $Store->name }}" id="idname" name="name"
+                                                    <input value="" id="idClientPaypal" name="clientPaypal"
                                                            type="text" class="form-control">
                                                 </div>
                                                 <div class="col">
                                                     <label for="inputName">Client Secret:</label>
-                                                    <input value="{{ $Store->name }}" id="idname" name="name"
+                                                    <input value="" id="idSecretPaypal" name="secretPaypal"
                                                            type="text" class="form-control">
                                                 </div>
                                             </div>
@@ -650,28 +660,28 @@
 
             @if(isset($listStorePayment))
                 @foreach($listStorePayment as $storePayment)
-                    <?php if($storePayment->type_payment_system == 'money') { ?>
+                    <?php if($storePayment->type_payment_system == 'dinheiro') { ?>
                         <?php if($storePayment->status == 'S') { ?>
                             $('#idmoneystore').prop("checked", true);
                         <?php } else { ?>
                             $('#idmoneystore').prop("checked", false);
                         <?php } ?>
                     <?php } ?>
-                    <?php if( ($storePayment->type_payment_local == 'store') && ($storePayment->type_payment_name == 'debit') && ($storePayment->type_payment_flag == 'mastercard') ) { ?>
+                    <?php if( ($storePayment->type_payment_local == 'loja') && ($storePayment->type_payment_name == 'débito') && ($storePayment->type_payment_flag == 'mastercard') ) { ?>
                         <?php if($storePayment->status == 'S') { ?>
                             $('#iddebitmastercardstore').prop("checked", true);
                         <?php } else { ?>
                             $('#iddebitmastercardstore').prop("checked", false);
                         <?php } ?>
                     <?php } ?>
-                    <?php if( ($storePayment->type_payment_local == 'store') && ($storePayment->type_payment_name == 'debit') && ($storePayment->type_payment_flag == 'visa') ) { ?>
+                    <?php if( ($storePayment->type_payment_local == 'loja') && ($storePayment->type_payment_name == 'débito') && ($storePayment->type_payment_flag == 'visa') ) { ?>
                         <?php if($storePayment->status == 'S') { ?>
                             $('#iddebitvisastore').prop("checked", true);
                         <?php } else { ?>
                             $('#iddebitvisastore').prop("checked", false);
                         <?php } ?>
                     <?php } ?>
-                    <?php if( ($storePayment->type_payment_local == 'store') && ($storePayment->type_payment_name == 'debit') && ($storePayment->type_payment_flag == 'elo') ) { ?>
+                    <?php if( ($storePayment->type_payment_local == 'loja') && ($storePayment->type_payment_name == 'débito') && ($storePayment->type_payment_flag == 'elo') ) { ?>
                         <?php if($storePayment->status == 'S') { ?>
                             $('#iddebitelostore').prop("checked", true);
                         <?php } else { ?>
@@ -679,18 +689,25 @@
                         <?php } ?>
                     <?php } ?>
 
-                    <?php if( ($storePayment->type_payment_local == 'store') && ($storePayment->type_payment_name == 'credit') && ($storePayment->type_payment_flag == 'mastercard') ) { ?>
+                    <?php if( ($storePayment->type_payment_local == 'loja') && ($storePayment->type_payment_name == 'crédito') && ($storePayment->type_payment_flag == 'mastercard') ) { ?>
                         <?php if($storePayment->status == 'S') { ?>
                             $('#idcreditmastercardstore').prop("checked", true);
                         <?php } else { ?>
                             $('#idcreditmastercardstore').prop("checked", false);
                         <?php } ?>
                     <?php } ?>
-                    <?php if( ($storePayment->type_payment_local == 'store') && ($storePayment->type_payment_name == 'credit') && ($storePayment->type_payment_flag == 'visa') ) { ?>
+                    <?php if( ($storePayment->type_payment_local == 'loja') && ($storePayment->type_payment_name == 'crédito') && ($storePayment->type_payment_flag == 'visa') ) { ?>
                         <?php if($storePayment->status == 'S') { ?>
                             $('#idcreditvisastore').prop("checked", true);
                         <?php } else { ?>
                             $('#idcreditvisastore').prop("checked", false);
+                        <?php } ?>
+                    <?php } ?>
+                    <?php if( ($storePayment->type_payment_local == 'loja') && ($storePayment->type_payment_name == 'crédito') && ($storePayment->type_payment_flag == 'elo') ) { ?>
+                        <?php if($storePayment->status == 'S') { ?>
+                            $('#idcreditelostore').prop("checked", true);
+                        <?php } else { ?>
+                            $('#idcreditelostore').prop("checked", false);
                         <?php } ?>
                     <?php } ?>
                     <?php if( ($storePayment->type_payment_system == 'paypal') ) { ?>
@@ -699,8 +716,13 @@
                         <?php } else { ?>
                             $('#idpaypalapp').prop("checked", false);
                         <?php } ?>
+                        <?php if(!is_null($storePayment->client_id)) { ?>
+                            $('#idClientPaypal').val('{{$storePayment->client_id}}');
+                        <?php } ?>
+                        <?php if(!is_null($storePayment->client_secret)) { ?>
+                            $('#idSecretPaypal').val('{{$storePayment->client_secret}}');
+                        <?php } ?>
                     <?php } ?>
-
                 @endforeach
             @endif
 
