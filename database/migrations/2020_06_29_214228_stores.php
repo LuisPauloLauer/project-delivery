@@ -33,6 +33,7 @@ class Stores extends Migration
             $table->string('email')->nullable(false);
             $table->decimal('minimum_order', 16, 4)->nullable();
             $table->text('description')->nullable(false);
+            $table->string('url_site')->nullable();
             $table->string('path_image_capa')->nullable();
             $table->string('path_image_logo')->nullable();
             $table->timestamps();

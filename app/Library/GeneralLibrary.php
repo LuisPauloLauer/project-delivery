@@ -81,4 +81,92 @@ class GeneralLibrary
 
         return $UsersAdm = User::whereIn('id', $inUsersAdmStore)->orderBy('id','asc')->get();
     }
+
+    private function numberAdjust($pNumber, $pAdd9, $pDel9)
+    {
+        if($pAdd9) {
+            //If number has 11 digits do nothing
+            if (strlen($pNumber) == 11){
+                return $pNumber;
+            } else if (strlen($pNumber) == 10){
+                //Get DDD and Number
+                $ddd = substr($pNumber, 0, 2);
+                $num = str_replace($ddd, '', $pNumber);
+
+                //Verify if the number is cell phone, if dont return the self number.
+                if ($num[0] == 2 || $num[0] == 3) {
+                    return $pNumber;
+                }
+
+                //If cell phone and has only 8 number, add 9 number
+                if (strlen($num) == 8) {
+                    $num = "9{$num}";
+                }
+
+                return "{$ddd}{$num}";
+            }
+        } else if ($pDel9) {
+            //If number has 11 digits remove the digit 9
+            if (strlen($pNumber) == 11){
+                //Get DDD and Number
+                $ddd = substr($pNumber, 0, 2);
+                $num = str_replace($ddd, '', $pNumber);
+
+                //Verify if the number is cell phone, if dont return the self number.
+                if ($num[0] == 2 || $num[0] == 3) {
+                    return $pNumber;
+                }
+
+                //If cell phone and has 9 digits, remove the digit 9.
+                if (strlen($num) == 9) {
+                    $num = substr($num, 1, $num);
+                }
+
+                return "{$ddd}{$num}";
+            } else {
+                return $pNumber;
+            }
+        } else {
+            return $pNumber;
+        }
+    }
+
+    //Clean the number to removed the caracters
+    private function numberSanitize($pNumber)
+    {
+        return preg_replace('/[^0-9]/', '', $pNumber);
+    }
+
+    public function adjustDigitNumberNine($pNumber, $pAdd9=true, $pDel9=false)
+    {
+        if (empty($pNumber))
+            return '';
+
+        $number = $this->numberSanitize($pNumber);
+        $number = $this->numberAdjust($number, $pAdd9, $pDel9);
+
+        return $number;
+    }
+
+    public function validatePhoneNumber($phoneNumber)
+    {
+        $phoneNumber = trim(str_replace('/', '', str_replace(' ', '', str_replace('-', '', str_replace(')', '', str_replace('(', '', $phoneNumber))))));
+
+        $regexPhone = '/^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})\-?(\d{4}))$/'; // Regex para validar somente celular
+
+        if (preg_match($regexPhone, $phoneNumber)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function adjustUrlSiteOfStore($urlSite)
+    {
+        if($urlSite[strlen($urlSite)-1] === '/'){
+            return substr($urlSite, 0, strlen($urlSite)-1);
+        } else {
+            return substr($urlSite, 0, strlen($urlSite));
+        }
+    }
 }

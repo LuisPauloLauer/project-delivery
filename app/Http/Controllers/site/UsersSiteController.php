@@ -4,16 +4,52 @@ namespace App\Http\Controllers\site;
 
 use App\Http\Controllers\Controller;
 use App\mdSocialAccount;
-use App\User;
+use App\mdStores;
 use App\UserSite;
-use http\Url;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
 class UsersSiteController extends Controller
 {
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\mdStores  $mdStores
+     * @return \Illuminate\Http\Response
+     */
+    public function verifyAccountUserSite(mdStores $store, $email, $vcode)
+    {
+        if(UserSite::where('email', $email)->where('is_verified', 1)->exists()){
+            $userSite = UserSite::where('email', $email)->where('is_verified', 1)->first();
+
+            return view('site.user.verifyUser', [
+                'appName'       => env('APP_NAME'),
+                'store'         => $store,
+                'userSite'      => $userSite,
+                'userVerified'  => true
+            ]);
+
+        } else if (UserSite::where('email', $email)->where('verification_code', $vcode)->where('is_verified', 0)->exists()) {
+            $userSite = UserSite::where('email', $email)->where('verification_code', $vcode)->where('is_verified', 0)->first();
+            $userSite->is_verified = 1;
+            $userSite->verification_code = '';
+
+            if($userSite->save()){
+                return view('site.user.verifyUser', [
+                    'appName'       => env('APP_NAME'),
+                    'store'         => $store,
+                    'userSite'      => $userSite,
+                    'userVerified'  => false
+                ]);
+            }
+        } else {
+            abort(404, "Sorry, You can do this actions");
+        }
+    }
+
     public function loginUserSite(Request $request)
     {
         $urlCallBack = url()->previous();

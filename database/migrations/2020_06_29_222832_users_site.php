@@ -16,6 +16,7 @@ class UsersSite extends Migration
         Schema::create('UsersSite', function (Blueprint $table) {
             $table->id();
             $table->char('status',1)->default('N')->nullable(false);
+            $table->integer('is_verified')->default(0)->nullable(false);
             $table->unsignedBigInteger('universitybuilding');
             $table->string('name')->nullable(false);
             $table->string('slug')->nullable(false);
@@ -25,6 +26,7 @@ class UsersSite extends Migration
             $table->char('fone',11)->unique()->nullable(false);
             $table->string('email')->unique()->nullable(false);
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('verification_code')->nullable();
             $table->string('password')->nullable();
             $table->string('path_image')->nullable();
             //$table->rememberToken();

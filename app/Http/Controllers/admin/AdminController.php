@@ -67,6 +67,11 @@ class AdminController extends Controller
 
         if(Auth::attempt($credentials)){
 
+            //$remember_me = Input::get('remember');
+            //if(!empty($remember_me)){
+            //    Auth::login(Auth::user()->id, true);
+            //}
+
             $userAuth = Auth::user();
 
             if(strtoupper($userAuth->status) == 'S'){

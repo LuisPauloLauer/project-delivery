@@ -187,10 +187,10 @@ $pathImagens = \App\Library\FilesControl::getPathImages();
                 @can('managerProducts')
                     <li class="nav-item has-treeview
                         {{ (
-                            (url()->current() === env('APP_URL').'/dashboard/orders/included' ) ||
-                            (url()->current() === env('APP_URL').'/dashboard/orders/confirmed' ) ||
-                            (url()->current() === env('APP_URL').'/dashboard/orders/togodelivery' ) ||
-                            (url()->current() === env('APP_URL').'/dashboard/orders/delivered' )
+                            (url()->current() === env('APP_URL').'/orders/included' ) ||
+                            (url()->current() === env('APP_URL').'/orders/confirmed' ) ||
+                            (url()->current() === env('APP_URL').'/orders/togodelivery' ) ||
+                            (url()->current() === env('APP_URL').'/orders/delivered' )
                             ? 'menu-open' : ''
                             ) }}
                         ">
@@ -204,28 +204,28 @@ $pathImagens = \App\Library\FilesControl::getPathImages();
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <a href="{{ route('view.orders', ['status' => 'included' ]) }}"
-                                   class="nav-link {{ ((url()->current() === env('APP_URL').'/dashboard/orders/included' ) ? 'active' : '') }}">
+                                   class="nav-link {{ ((url()->current() === env('APP_URL').'/orders/included' ) ? 'active' : '') }}">
                                     <i class="fas fa-notes-medical nav-icon"></i>
                                     <p>Incluídos</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('view.orders', ['status' => 'confirmed' ]) }}"
-                                   class="nav-link {{ ((url()->current() === env('APP_URL').'/dashboard/orders/confirmed' ) ? 'active' : '') }}">
+                                   class="nav-link {{ ((url()->current() === env('APP_URL').'/orders/confirmed' ) ? 'active' : '') }}">
                                     <i class="fas fa-spinner nav-icon"></i>
                                     <p>Preparando</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('view.orders', ['status' => 'togodelivery' ]) }}"
-                                   class="nav-link {{ ((url()->current() === env('APP_URL').'/dashboard/orders/togodelivery' ) ? 'active' : '') }}">
+                                   class="nav-link {{ ((url()->current() === env('APP_URL').'/orders/togodelivery' ) ? 'active' : '') }}">
                                     <i class="fa fa-truck nav-icon"></i>
                                     <p>Entregando</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('view.orders', ['status' => 'delivered' ]) }}"
-                                   class="nav-link {{ ((url()->current() === env('APP_URL').'/dashboard/orders/delivered' ) ? 'active' : '') }}">
+                                   class="nav-link {{ ((url()->current() === env('APP_URL').'/orders/delivered' ) ? 'active' : '') }}">
                                     <i class="fas fa-clipboard-check nav-icon"></i>
                                     <p>Prontos</p>
                                 </a>

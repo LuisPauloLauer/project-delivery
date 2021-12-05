@@ -259,6 +259,12 @@
                                         </div>
                                         <div class="form-row">
                                             <div class="col">
+                                                <label for="inputName">URL do site:</label><span class="text-danger col-1">{{$errors->first('url_site')}}</span>
+                                                <input value="{{ $Store->url_site }}" id="idurlsite"  name="url_site" type="text" class="form-control" >
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col">
                                                 <hr class="mb-4">
                                                 <button class="btn btn-primary btn-lg btn-block" type="submit" value="Submit">Alterar</button>
                                             </div>

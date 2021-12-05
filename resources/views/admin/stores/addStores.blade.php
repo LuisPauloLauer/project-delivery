@@ -238,13 +238,19 @@
                                         <div class="form-row">
                                             <div class="col">
                                                 <label for="inputEmail">Email:</label><span class="text-danger col-1">{{$errors->first('email')}}</span>
-                                                <input id="idemail"  name="email" type="text" class="form-control" >
+                                                <input id="idemail"  name="email" type="email" class="form-control" >
                                             </div>
                                         </div>
                                         <div class="form-row">
                                             <div class="col">
                                                 <label for="inputDescription">Descrição:</label><span class="text-danger col-1">{{$errors->first('description')}}</span>
                                                 <textarea name="description" id="iddescription" class="md-textarea form-control" rows="4"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col">
+                                                <label for="inputUrl">URL do site:</label><span class="text-danger col-1">{{$errors->first('url_site')}}</span>
+                                                <input id="idurlsite"  name="url_site" type="url" class="form-control" >
                                             </div>
                                         </div>
                                         <div class="form-row">

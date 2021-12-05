@@ -36,23 +36,20 @@
                         <div class="card">
                             <!-- card-header -->
                             <div class="card-header">
-                                @if ($message = Session::get('success'))
-                                    <div class="alert alert-success alert-block">
-                                        <button type="button" class="close" data-dismiss="alert">✔</button>
-                                        <strong>{{ $message }}</strong>
-                                    </div>
-                                @elseif ($message = Session::get('error'))
-                                    <div class="alert alert-danger alert-block" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert">✔</button>
-                                        <strong>{{ $message }}</strong>
-                                    </div>
-                                @endif
+                                <div id="alert-success-addUserAdm" class="alert alert-success alert-block d-none">
+                                    <button type="button" class="close" data-dismiss="alert">✔</button>
+                                    <strong id="success-addUserAdm"></strong>
+                                </div>
+                                <div id="alert-danger-addUserAdm" class="alert alert-danger alert-block d-none" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert">✔</button>
+                                    <strong id="danger-addUserAdm"></strong>
+                                </div>
                             </div>
                             <!-- /.card-header -->
                             <!-- card-body -->
                             <div class="card-body">
                                 <div class="card-body-content align-self-center">
-                                    <form action="{{ route('usersadm.store') }}" method="post" enctype="multipart/form-data">
+                                    <form name="adduserAdm" id="idadduserAdm" method="post" enctype="multipart/form-data">
                                         @csrf
 
                                         <div class="d-flex justify-content-center">
@@ -105,7 +102,7 @@
                                         </div>
                                         <div class="form-row">
                                             <div class="col">
-                                                <label for="inputTpUserAdm">Tipo de usuário:</label><span class="text-danger col-1">{{$errors->first('tpuser')}}</span>
+                                                <label for="inputTpUserAdm">Tipo de usuário:</label><span id="spnDangerTpUser" class="text-danger col-1"></span>
                                                 <select id="idtpuseradm" name="tpuser" autofocus class="custom-select d-block w-100">
                                                     @foreach($listTpUsersAdm as $TpUsersAdm)
                                                         <option value="{{ $TpUsersAdm->id }}">{{ $TpUsersAdm->name }}</option>
@@ -113,7 +110,7 @@
                                                 </select>
                                             </div>
                                             <div class="col">
-                                                <label for="inputName">Nome:</label><span class="text-danger col-1">{{$errors->first('name')}}</span>
+                                                <label for="inputName">Nome:</label><span id="spnDangerName" class="text-danger col-1"></span>
                                                 <input type="text" class="form-control" id="idname"  name="name">
                                             </div>
                                         </div>
@@ -122,7 +119,6 @@
                                                 <?php $teste = 'affiliado' ?>
                                                 <label for="inputStore">Lojas:</label>
                                                 <select id="idstore" name="store[]" data-placeholder=" selecione uma loja ou mais lojas para usuário..." class="chosen-select" multiple tabindex="4">
-                                                    <option value=""></option>
                                                     @foreach($listStore as $Store)
                                                         @if($teste !== $Store->affiliate)
                                                             <optgroup label="{{ $Store::find($Store->id)->pesqAffiliate->fantasy_name }}">
@@ -139,47 +135,47 @@
                                         </div>
                                         <div class="form-row">
                                             <div class="col">
-                                                <label for="inputCpf">CPF:</label><span class="text-danger col-1">{{$errors->first('cpf')}}</span>
+                                                <label for="inputCpf">CPF:</label><span id="spnDangerCPF" class="text-danger col-1"></span>
                                                 <input id="idcpf"  name="cpf" type="text" class="form-control" >
                                             </div>
                                             <div class="col">
-                                                <label for="inputBirth">Data de nascimento:</label><span class="text-danger col-1">{{$errors->first('birth')}}</span>
+                                                <label for="inputBirth">Data de nascimento:</label><span id="spnDangerBirth" class="text-danger col-1"></span>
                                                 <input id="idbirth"  name="birth" type="date" class="form-control" >
                                             </div>
                                         </div>
                                         <div class="form-row">
                                             <div class="col">
-                                                <label for="inputSex">Sexo:</label><span class="text-danger col-1">{{$errors->first('sex')}}</span>
+                                                <label for="inputSex">Sexo:</label><span id="spnDangerSex" class="text-danger col-1"></span>
                                                 <select id="idsex" name="sex" class="custom-select d-block w-100">
                                                     <option value="M">Masculino</option>
                                                     <option value="F">Feminino</option>
                                                 </select>
                                             </div>
                                             <div class="col">
-                                                <label for="inputFone">Telefone:</label><span class="text-danger col-1">{{$errors->first('fone')}}</span>
+                                                <label for="inputFone">Telefone:</label><span id="spnDangerFone" class="text-danger col-1"></span>
                                                 <input id="idfone"  name="fone" type="text" placeholder="Ex.: (51) 98888-7777" class="form-control" >
                                             </div>
                                         </div>
                                         <div class="form-row">
                                             <div class="col">
-                                                <label for="inputEmail">Email:</label><span class="text-danger col-1">{{$errors->first('email')}}</span>
+                                                <label for="inputEmail">Email:</label><span id="spnDangerEmail" class="text-danger col-1"></span>
                                                 <input id="idemail"  name="email" type="text" class="form-control" >
                                             </div>
                                         </div>
                                         <div class="form-row">
                                             <div class="col">
-                                                <label for="inputPassword">Senha:</label><span class="text-danger col-1">{{$errors->first('password')}}</span>
+                                                <label for="inputPassword">Senha:</label><span id="spnDangerPassword" class="text-danger col-1"></span>
                                                 <input id="idpassword"  name="password" type="password" class="form-control" >
                                             </div>
                                             <div class="col">
-                                                <label for="inputConfirmPassword">Confirma senha:</label><span class="text-danger col-1">{{$errors->first('password_confirmation')}}</span>
+                                                <label for="inputConfirmPassword">Confirma senha:</label><span id="spnDangerPasswordConfirmation" class="text-danger col-1"></span>
                                                 <input id="idconfirmpassword"  name="password_confirmation" type="password" class="form-control" >
                                             </div>
                                         </div>
                                         <div class="form-row">
                                             <div class="col">
                                                 <hr class="mb-4">
-                                                <button class="btn btn-primary btn-lg btn-block" type="submit" value="Submit">Cadastrar</button>
+                                                <button id="btnSubmitAddUserAdm" class="btn btn-primary btn-lg btn-block" type="submit" value="Submit">Cadastrar</button>
                                             </div>
                                         </div>
                                     </form>
@@ -205,6 +201,8 @@
         var inputImage = document.querySelector("#id-input-image-avatar"),
             divPlaceholderFixed = document.querySelector(".div-placeholder-image-avatar-fixed");
 
+        var frmAddUserAdm = document.getElementsByName('adduserAdm')[0];
+
         var $uploadCrop,
             imagenInput;
 
@@ -215,24 +213,129 @@
             $('#idcpf').mask('000.000.000-00', {reverse: true});
             $('#idfone').mask('(00) 00000-0000');
 
+
+            $(function () {
+                $('form[name="adduserAdm"]').submit(function (event) {
+                    event.preventDefault();
+                    var form = $('#idadduserAdm')[0];
+                    var formData = new FormData(form);
+                    // caso queira adicionar um campo extra ao FormData
+                    // data.append("customfield", "Este é um campo extra para teste");
+                    $("#btnSubmitAddUserAdm").prop("disabled", true);
+                    $("#btnSubmitAddUserAdm").text("Enviando dados...");
+
+                    $("#alert-success-addUserAdm").addClass('d-none');
+                    $("#success-addUserAdm").empty();
+                    $("#alert-danger-addUserAdm").addClass('d-none');
+                    $("#danger-addUserAdm").empty();
+
+                    $("#spnDangerTpUser").empty();
+                    $("#spnDangerName").empty();
+                    $("#spnDangerCPF").empty();
+                    $("#spnDangerBirth").empty();
+                    $("#spnDangerSex").empty();
+                    $("#spnDangerFone").empty();
+                    $("#spnDangerEmail").empty();
+                    $("#spnDangerPassword").empty();
+                    $("#spnDangerPasswordConfirmation").empty();
+
+                    $.ajax({
+                        url: "{{ route('usersadm.store') }}",
+                        type: "post",
+                        enctype: 'multipart/form-data',
+                        data: formData,
+                        processData: false,   // impedir que o jQuery tranforma a "data" em querystring
+                        contentType: false,   // desabilitar o cabeçalho "Content-Type"
+                        //cache: false,       // desabilitar o "cache"
+                        dataType: "json",
+                        success: function (response) {
+                            if(response.success === true){
+                                //console.log(response);
+                                $("#alert-success-addUserAdm").removeClass('d-none');
+                                $("#success-addUserAdm").text(response.message);
+                                $("#btnSubmitAddUserAdm").prop("disabled", false);
+                                $("#btnSubmitAddUserAdm").text("Cadastrar");
+                                frmAddUserAdm.reset();
+                                deleteImage();
+                                $("#idSelectStore").hide();
+                                $(".chosen-select").val('').trigger("chosen:updated");
+                            }else{
+                                //console.log(response);
+                                $("#alert-danger-addUserAdm").removeClass('d-none');
+                                $("#danger-addUserAdm").text(response.message);
+                                $("#btnSubmitAddUserAdm").prop("disabled", false);
+                                $("#btnSubmitAddUserAdm").text("Cadastrar");
+                            }
+                        },
+                        error: function(xhr, status, error){
+                            //console.log(xhr.responseJSON.errors);
+
+                            if((typeof xhr.responseJSON.errors !== 'undefined')){
+                                if (typeof xhr.responseJSON.errors.tpuser !== 'undefined') {
+                                    $("#spnDangerTpUser").text(xhr.responseJSON.errors.tpuser[0]);
+                                }
+
+                                if (typeof xhr.responseJSON.errors.name !== 'undefined') {
+                                    $("#spnDangerName").text(xhr.responseJSON.errors.name[0]);
+                                }
+
+                                if (typeof xhr.responseJSON.errors.cpf !== 'undefined') {
+                                    $("#spnDangerCPF").text(xhr.responseJSON.errors.cpf[0]);
+                                }
+
+                                if (typeof xhr.responseJSON.errors.birth !== 'undefined') {
+                                    $("#spnDangerBirth").text(xhr.responseJSON.errors.birth[0]);
+                                }
+
+                                if (typeof xhr.responseJSON.errors.sex !== 'undefined') {
+                                    $("#spnDangerSex").text(xhr.responseJSON.errors.sex[0]);
+                                }
+
+                                if (typeof xhr.responseJSON.errors.fone !== 'undefined') {
+                                    $("#spnDangerFone").text(xhr.responseJSON.errors.fone[0]);
+                                }
+
+                                if (typeof xhr.responseJSON.errors.email !== 'undefined') {
+                                    $("#spnDangerEmail").text(xhr.responseJSON.errors.email[0]);
+                                }
+
+                                if (typeof xhr.responseJSON.errors.password !== 'undefined') {
+                                    $("#spnDangerPassword").text(xhr.responseJSON.errors.password[0]);
+                                }
+
+                                if (typeof xhr.responseJSON.errors.password_confirmation !== 'undefined') {
+                                    $("#spnDangerPasswordConfirmation").text(xhr.responseJSON.errors.password_confirmation[0]);
+                                }
+                            } else {
+                                console.error('Erro: '+xhr.status);
+                                $("#alert-danger-addUserAdm").removeClass('d-none');
+                                $("#danger-addUserAdm").text('Erro: '+xhr.status+' Contate o suporte!');
+                            }
+
+                            $("#btnSubmitAddUserAdm").prop("disabled", false);
+                            $("#btnSubmitAddUserAdm").text("Cadastrar");
+                        },
+                    });
+                })
+            });
+
             var typeUserAdmSelected = $( "#idtpuseradm option:selected" ).val();
 
             switch(typeUserAdmSelected) {
                 case '1':
-                    $("#idSelectStore").hide(820);
+                    $("#idSelectStore").hide();
                     break;
                 case '2':
-                    //alert('Pessoa jurídica');
-                    $("#idSelectStore").hide(820);
+                    $("#idSelectStore").hide();
                     break;
                 case '3':
-                    $("#idSelectStore").show(820);
+                    $("#idSelectStore").show();
                     break;
                 case '4':
-                    $("#idSelectStore").show(820);
+                    $("#idSelectStore").show();
                     break;
                 case '5':
-                    $("#idSelectStore").show(820);
+                    $("#idSelectStore").show();
                     break;
                 default:
                     alert('Tipo de usuário incorreto!!!');
@@ -247,7 +350,6 @@
                         $("#idSelectStore").hide(820);
                         break;
                     case '2':
-                        //alert('Pessoa jurídica');
                         $("#idSelectStore").hide(820);
                         break;
                     case '3':
@@ -268,13 +370,7 @@
 
         });
 
-        /*$('.input-images-1').dropzoneImageObject({
-            imagesInputName: 'image',
-            maxFiles: 5
-        });*/
-
         function readFile(input) {
-            //alert('teste1');
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
                 reader.onload = function (event) {
@@ -440,13 +536,6 @@
                 divPlaceholderFixed.classList.remove("div-placeholder-image-avatar-ishovered");
             }
         );
-        /*$( 'div.div-choose-image-avatar-add' ).hover(
-            function() {
-                divPlaceholderFixed.classList.add("div-placeholder-image-avatar-ishovered");
-
-            }, function() {
-                divPlaceholderFixed.classList.remove("div-placeholder-image-avatar-ishovered");
-            }*/
 
     </script>
 @endsection

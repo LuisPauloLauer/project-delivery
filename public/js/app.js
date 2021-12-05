@@ -2075,9 +2075,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   methods: {
-    //updateOrderCategory: function(e) {
-    //    window.console.log("Future index: " + e.draggedContext.futureIndex);
-    //},
     updateOrderCategory: function updateOrderCategory(pDisableSaveOrder) {
       var _this = this;
 
@@ -2111,11 +2108,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     listKitsAndProductsByCategory: function listKitsAndProductsByCategory(e, idCategory) {
       var _this2 = this;
 
-      //if(this.initOpenModal){
-      //    $(".sortable-item").removeClass("sortable-item--active");
-      //}
-      //var divSortableItem = e.currentTarget;
-      //divSortableItem.classList.add("sortable-item--active");
       this.categoriesProductNew.map(function (categoriesproduct, index) {
         if (categoriesproduct.id === idCategory) {
           categoriesproduct.active = true;
@@ -2348,7 +2340,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     }
   },
-  mounted: function mounted() {//console.log('Component mounted.')
+  mounted: function mounted() {//console.log(window.location.href);
   }
 });
 
@@ -6796,7 +6788,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.sortable-title-info {\n    display: flex;\n    margin-top: 24px;\n    padding: 0 16px;\n}\n.sortable-container-itens {\n    display: flex;\n    margin-top: 24px;\n    padding: 0 16px;\n    background: #fff;\n    height: 385px;\n}\n.sortable-content-itens {\n    display: contents;\n}\n.sortable-content-menu-header-itens {\n    display: flex;\n    width: 100%;\n    background-color: #fbfbfb;\n    border: 1px solid #f7f7f7;\n    border-radius: 6px;\n}\n.sortable-content-menu-column-itens {\n    width: calc(100% / 3);\n    flex: 0 0 calc(100% / 3);\n    border-right: 1px solid #eee;\n    border-bottom: 1px solid #eee;\n    overflow: hidden;\n}\n.sortable-content-menu-group {\n    transition: all .2s ease-in-out;\n}\n.sortable-content-menu-group-title {\n    padding: 8px 16px;\n    border-bottom: 1px solid hsla(0,0%,58.4%,.4);\n    font-size: 14px;\n    font-weight: 500;\n    background: #f8f8f8;\n    color: #3e3e3e;\n    height: 48px;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n}\n.sort-menu-items-modal .sortable-content-menu-group-body {\n    overflow-y: auto;\n}\n.sortable-content-menu-group-body {\n    height: calc(100% - 48px);\n}\n.sortable-item {\n    display: flex;\n    align-items: center;\n    padding: 12px 8px 12px 16px;\n    font-size: 12px;\n    line-height: 1.57;\n    background: #fff;\n    border-bottom: 1px solid #eee;\n}\n.sortable-item:not(.sortable-chosen):hover {\n    color: #ea1d2c;\n}\n.sortable-item--clickable {\n    cursor: pointer;\n}\n.sortable-item--truncate {\n    width: 100%;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    -webkit-box-orient: vertical;\n}\n.my-handle:hover {\n    cursor: move;\n}\n.itemactive {\n    color: #3e3e3e;\n    font-weight: 700;\n    background: #f2f2f2;\n}\n.sort-menu-items-modal .sortable-chosen{\n    padding: 2px 6px;\n    margin: 12px 0;\n    border: 1px solid #28a745;\n    border-radius: 4px;\n    box-shadow:0 2px 6px 0 rgba(0,0,0,0.1);\n    background: #f2f2f2;\n    color: #28a745;\n}\n@media (max-width: 991px) {\n.sortable-content-menu-header-itens{\n        width: 900px;\n}\n.modal-content-sortable{\n        width: 100%;\n        margin: 0;\n}\n.sortable-content-itens {\n        display: block;\n        width: 100%;\n        overflow-y: scroll;\n}\n}\n\n", ""]);
+exports.push([module.i, "\n.sortable-title-info {\n    display: flex;\n    margin-top: 24px;\n    padding: 0 16px;\n}\n.sortable-container-itens {\n    display: flex;\n    margin-top: 24px;\n    padding: 0 16px;\n    background: #fff;\n    height: 385px;\n}\n.sortable-content-itens {\n    display: contents;\n}\n.sortable-content-menu-header-itens {\n    display: flex;\n    width: 100%;\n    background-color: #fbfbfb;\n    border: 1px solid #f7f7f7;\n    border-radius: 6px;\n}\n.sortable-content-menu-column-itens {\n    width: calc(100% / 3);\n    flex: 0 0 calc(100% / 3);\n    border-right: 1px solid #eee;\n    border-bottom: 1px solid #eee;\n    overflow: hidden;\n}\n.sortable-content-menu-group {\n    transition: all .2s ease-in-out;\n}\n.sortable-content-menu-group-title {\n    padding: 8px 16px;\n    border-bottom: 1px solid hsla(0,0%,58.4%,.4);\n    font-size: 14px;\n    font-weight: 500;\n    background: #f8f8f8;\n    color: #3e3e3e;\n    height: 48px;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n}\n.sort-menu-items-modal .sortable-content-menu-group-body {\n    overflow-y: auto;\n}\n.sortable-content-menu-group-body {\n    height: calc(100% - 48px);\n}\n.sortable-item {\n    display: flex;\n    align-items: center;\n    padding: 12px 8px 12px 16px;\n    font-size: 12px;\n    line-height: 1.57;\n    background: #fff;\n    border-bottom: 1px solid #eee;\n}\n.sortable-item:not(.sortable-chosen):hover {\n    color: #ea1d2c;\n}\n.sortable-item--clickable {\n    cursor: pointer;\n}\n.sortable-item--truncate {\n    width: 100%;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    -webkit-box-orient: vertical;\n}\n.my-handle:hover {\n    cursor: move;\n}\n.itemactive {\n    color: #3e3e3e;\n    font-weight: 700;\n    background: #f2f2f2;\n}\n.sort-menu-items-modal .sortable-chosen{\n    padding: 2px 6px;\n    margin: 12px 0;\n    border: 1px solid #28a745;\n    border-radius: 4px;\n    box-shadow:0 2px 6px 0 rgba(0,0,0,0.1);\n    background: #f2f2f2;\n    color: #28a745;\n}\n@media (max-width: 991px) {\n.sortable-content-menu-header-itens{\n        width: 900px;\n}\n.modal-content-sortable{\n        width: 100%;\n        margin: 0;\n}\n.sortable-content-itens {\n        display: block;\n        width: 100%;\n        overflow-y: scroll;\n}\n}\n", ""]);
 
 // exports
 
@@ -58291,10 +58283,10 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\delivery\resources\js\app.js */"./resources/js/app.js");
-__webpack_require__(/*! C:\xampp\htdocs\delivery\resources\sass\app.scss */"./resources/sass/app.scss");
-__webpack_require__(/*! C:\xampp\htdocs\delivery\resources\views\admin\node_modules\scss\style.scss */"./resources/views/admin/node_modules/scss/style.scss");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\delivery\resources\views\site\node_modules\scss\style.scss */"./resources/views/site/node_modules/scss/style.scss");
+__webpack_require__(/*! C:\xampp\htdocs\delivery_d\resources\js\app.js */"./resources/js/app.js");
+__webpack_require__(/*! C:\xampp\htdocs\delivery_d\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\delivery_d\resources\views\admin\node_modules\scss\style.scss */"./resources/views/admin/node_modules/scss/style.scss");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\delivery_d\resources\views\site\node_modules\scss\style.scss */"./resources/views/site/node_modules/scss/style.scss");
 
 
 /***/ })

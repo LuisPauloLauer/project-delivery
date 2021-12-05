@@ -179,6 +179,10 @@ return [
          * intervention/image
         */
         Intervention\Image\ImageServiceProvider::class,
+        /*
+          * Sanitizer to formRequest on Requests
+        */
+        Waavi\Sanitizer\Laravel\SanitizerServiceProvider::class,
 
     ],
 
@@ -232,6 +236,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'Sanitizer' => Waavi\Sanitizer\Laravel\Facade::class,
 
     ],
 

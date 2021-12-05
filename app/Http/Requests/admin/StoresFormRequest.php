@@ -39,7 +39,7 @@ class StoresFormRequest extends FormRequest
                     'fone2'             => 'min:11',
                     'email'             => 'required|email:rfc,dns',
                     'description'       => 'required',
-                    //'imagen'            => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                    'url_site'          => 'required|url',
                 ];
             } else {
                 return [
@@ -54,7 +54,7 @@ class StoresFormRequest extends FormRequest
                     'fone1'             => 'required|min:11',
                     'email'             => 'required|email:rfc,dns',
                     'description'       => 'required',
-                    //'imagen'            => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                    'url_site'          => 'required|url',
                 ];
             }
 
@@ -71,6 +71,7 @@ class StoresFormRequest extends FormRequest
                     'fone2'             => 'min:11',
                     'email'             => 'required|email:rfc,dns',
                     'description'       => 'required',
+                    'url_site'          => 'required|url',
                 ];
             } else {
                 return [
@@ -83,6 +84,7 @@ class StoresFormRequest extends FormRequest
                     'fone1'             => 'required|min:11',
                     'email'             => 'required|email:rfc,dns',
                     'description'       => 'required',
+                    'url_site'          => 'required|url',
                 ];
             }
 
@@ -98,6 +100,7 @@ class StoresFormRequest extends FormRequest
         $msgNumeric     = 'só números';
         $msgFone        = 'fone inválido';
         $msgEmail       = 'o e-mail deve ser um email válido';
+        $msgUrl         = 'A url deve ser uma url válida';
         //$msgImage       = 'Arquivo deve ser do tipo imagen';
         //$msgMimes       = 'Imagen deve ser do tipo: jpeg, png, jpg, gif, svg';
 
@@ -119,6 +122,8 @@ class StoresFormRequest extends FormRequest
             'email.required'            => $msgRequired,
             'email.email'               => $msgEmail,
             'description.required'      => $msgRequired,
+            'url_site.required'         => $msgRequired,
+            'url_site.url'              => $msgUrl,
             //'imagen.required'           => $msgRequired,
             //'imagen.image'              => $msgImage,
             //'imagen.mimes'              => $msgMimes,

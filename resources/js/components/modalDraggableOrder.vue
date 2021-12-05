@@ -78,14 +78,11 @@
 
 <script>
     import draggable from 'vuedraggable';
-
     export default {
         components: {
             draggable
         },
-
         props: ['categoriesproduct'],
-
         data() {
             return {
                 categoriesProductNew: this.categoriesproduct,
@@ -99,11 +96,7 @@
                 csrf: document.head.querySelector('meta[name="csrf-token"]').content
             }
         },
-
         methods: {
-            //updateOrderCategory: function(e) {
-            //    window.console.log("Future index: " + e.draggedContext.futureIndex);
-            //},
             updateOrderCategory(pDisableSaveOrder) {
                 if(!pDisableSaveOrder){
                     this.isCategoryChange = true;
@@ -131,14 +124,6 @@
                 this.isDisableSaveOrder = pDisableSaveOrder;
             },
             listKitsAndProductsByCategory(e, idCategory){
-
-                //if(this.initOpenModal){
-                //    $(".sortable-item").removeClass("sortable-item--active");
-                //}
-
-                //var divSortableItem = e.currentTarget;
-
-                //divSortableItem.classList.add("sortable-item--active");
 
                 this.categoriesProductNew.map((categoriesproduct, index) => {
 
@@ -318,20 +303,17 @@
             }
         },
         mounted() {
-            //console.log('Component mounted.')
+            //console.log(window.location.href);
         }
     }
-
 </script>
 <style>
-
     .sortable-title-info {
         display: -webkit-flex;
         display: flex;
         margin-top: 24px;
         padding: 0 16px;
     }
-
     .sortable-container-itens {
         display: -webkit-flex;
         display: flex;
@@ -340,11 +322,9 @@
         background: #fff;
         height: 385px;
     }
-
     .sortable-content-itens {
         display: contents;
     }
-
     .sortable-content-menu-header-itens {
         display: -webkit-flex;
         display: flex;
@@ -353,7 +333,6 @@
         border: 1px solid #f7f7f7;
         border-radius: 6px;
     }
-
     .sortable-content-menu-column-itens {
         width: calc(100% / 3);
         -webkit-flex: 0 0 calc(100% / 3);
@@ -362,11 +341,9 @@
         border-bottom: 1px solid #eee;
         overflow: hidden;
     }
-
     .sortable-content-menu-group {
         transition: all .2s ease-in-out;
     }
-
     .sortable-content-menu-group-title {
         padding: 8px 16px;
         border-bottom: 1px solid hsla(0,0%,58.4%,.4);
@@ -382,15 +359,12 @@
         -webkit-justify-content: space-between;
         justify-content: space-between;
     }
-
     .sort-menu-items-modal .sortable-content-menu-group-body {
         overflow-y: auto;
     }
-
     .sortable-content-menu-group-body {
         height: calc(100% - 48px);
     }
-
     .sortable-item {
         display: -webkit-flex;
         display: flex;
@@ -402,32 +376,26 @@
         background: #fff;
         border-bottom: 1px solid #eee;
     }
-
     .sortable-item:not(.sortable-chosen):hover {
         color: #ea1d2c;
     }
-
     .sortable-item--clickable {
         cursor: pointer;
     }
-
     .sortable-item--truncate {
         width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
         -webkit-box-orient: vertical;
     }
-
     .my-handle:hover {
         cursor: move;
     }
-
     .itemactive {
         color: #3e3e3e;
         font-weight: 700;
         background: #f2f2f2;
     }
-
     .sort-menu-items-modal .sortable-chosen{
         padding: 2px 6px;
         margin: 12px 0;
@@ -437,7 +405,6 @@
         background: #f2f2f2;
         color: #28a745;
     }
-
     @media (max-width: 991px) {
         .sortable-content-menu-header-itens{
             width: 900px;
@@ -452,5 +419,4 @@
             overflow-y: scroll;
         }
     }
-
 </style>

@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+
+Route::post('usuario/registro/email', 'site\api\UsersSiteController@storeUserSiteByEmail');
+
+Route::post('usuario/login/email', 'site\api\UsersSiteController@loginUserSiteByEmail');
+

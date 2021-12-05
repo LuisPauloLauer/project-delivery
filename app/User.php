@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -20,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'slug', 'email', 'password',
     ];
 
     /**
@@ -47,6 +46,11 @@ class User extends Authenticatable
         $this->attributes['slug'] = Str::slug($value);
     }
 
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = Hash::make($value);
+    }
+
     public function setCpfAttribute($value)
     {
         $this->attributes['cpf'] = preg_replace("/\D/", '', $value);
@@ -55,11 +59,6 @@ class User extends Authenticatable
     public function setFoneAttribute($value)
     {
         $this->attributes['fone'] = preg_replace('/\D+/', '', $value);
-    }
-
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = Hash::make($value);
     }
 
     public function pesqTypeUserAdm()

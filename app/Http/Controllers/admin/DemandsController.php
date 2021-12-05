@@ -52,7 +52,7 @@ class DemandsController extends Controller
 
         if ($this->generalLibrary->isUserOfStoreSelected()) {
 
-            $APP_URL = env('APP_URL').'/dashboard/orders/';
+            $APP_URL = env('APP_URL').'/orders/';
             $statusDemand = mdStatusDemandsFood::where('type', $statusType)->first();
 
             $DemandsFood = DB::select('select

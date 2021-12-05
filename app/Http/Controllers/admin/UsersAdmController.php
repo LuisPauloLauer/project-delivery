@@ -120,16 +120,29 @@ class UsersAdmController extends Controller
     public function store(UsersAdmFormRequest $request)
     {
         if( (Gate::allows('isadmintotal')) || (Gate::allows('isadminedit')) ) {
+
             if( (Gate::allows('isadminedit')) && ($request->tpuser == 1) ){
-                return back()->with('error','Erro tipo de usuário (Administrador-total) não é habilitado para o usuário!!!');
+                //return back()->with('error','Erro tipo de usuário (Administrador-total) não é habilitado para o usuário!!!');
+                $response['success'] = false;
+                $response['message'] = 'Erro tipo de usuário (Administrador-total) não é habilitado para o usuário!!!';
+                echo json_encode($response);
+                return;
             }
 
         } else if( (Gate::allows('isadminstore')) ){
 
             if( (Gate::allows('isadminstore')) && ($request->tpuser == 1) ){
-                return back()->with('error','Erro tipo de usuário (Administrador-total) não é habilitado para o usuário!!!');
+                //return back()->with('error','Erro tipo de usuário (Administrador-total) não é habilitado para o usuário!!!');
+                $response['success'] = false;
+                $response['message'] = 'Erro tipo de usuário (Administrador-total) não é habilitado para o usuário!!!';
+                echo json_encode($response);
+                return;
             } else if ( (Gate::allows('isadminstore')) && ($request->tpuser == 2) ){
-                return back()->with('error','Erro tipo de usuário (Administrador-editor) não é habilitado para o usuário!!!');
+                //return back()->with('error','Erro tipo de usuário (Administrador-editor) não é habilitado para o usuário!!!');
+                $response['success'] = false;
+                $response['message'] = 'Erro tipo de usuário (Administrador-editor) não é habilitado para o usuário!!!';
+                echo json_encode($response);
+                return;
             }
 
         } else {
@@ -138,19 +151,35 @@ class UsersAdmController extends Controller
 
         if(($request->tpuser == 3)||($request->tpuser == 4)||($request->tpuser == 5)){
             if(!isset($request->store)){
-                return back()->with('error','Erro Deve selecionar pelo menos uma loja para o usuário do tipo loja!!!');
+                //return back()->with('error','Erro Deve selecionar pelo menos uma loja para o usuário do tipo loja!!!');
+                $response['success'] = false;
+                $response['message'] = 'Erro Deve selecionar pelo menos uma loja para o usuário do tipo loja!!!';
+                echo json_encode($response);
+                return;
             }
         } else if (($request->tpuser < 1 ) || ($request->tpuser > 5 )){
-            return back()->with('error','Erro Tipo de usuário incorreto!!!');
+            //return back()->with('error','Erro Tipo de usuário incorreto!!!');
+            $response['success'] = false;
+            $response['message'] = 'Erro Tipo de usuário incorreto!!!';
+            echo json_encode($response);
+            return;
         }
 
-        if(User::where('cpf', preg_replace("/\D/", '', $request->cpf))->exists()) {
-            $dataUserAdm = User::where('cpf', preg_replace("/\D/", '', $request->cpf))->first();
-            return back()->with('error','Erro CPF: ('.$dataUserAdm->cpf.') já existe no Usuário ID: ('.$dataUserAdm->id.')');
-        }
+        //if(User::where('cpf', preg_replace("/\D/", '', $request->cpf))->exists()) {
+        //    $dataUserAdm = User::where('cpf', preg_replace("/\D/", '', $request->cpf))->first();
+        //    //return back()->with('error','Erro CPF: ('.$dataUserAdm->cpf.') já existe no Usuário ID: ('.$dataUserAdm->id.')');
+        //    $response['success'] = false;
+        //    $response['message'] = 'Erro CPF: ('.$dataUserAdm->cpf.') já existe no Usuário ID: ('.$dataUserAdm->id.')';
+        //    echo json_encode($response);
+        //    return;
+        //}
 
         if( ($request->sex <> "M") && ($request->sex <> "F")){
             return back()->with('error','Erro Sexo incorreto!!!');
+            $response['success'] = false;
+            $response['message'] = 'Erro Sexo incorreto!!!';
+            echo json_encode($response);
+            return;
         }
 
         $UserAdm = new User();
@@ -200,7 +229,11 @@ class UsersAdmController extends Controller
 
                         } catch (\Exception $exception) {
                             $UserAdm->path_image = null;
-                            return back()->with('error','Erro Usuário ID: ('.$UserAdm->id.') '.$exception->getMessage());
+                            //return back()->with('error','Erro Usuário ID: ('.$UserAdm->id.') '.$exception->getMessage());
+                            $response['success'] = false;
+                            $response['message'] = 'Erro Usuário ID: ('.$UserAdm->id.') '.$exception->getMessage();
+                            echo json_encode($response);
+                            return;
                         }finally{
                             $UserAdm->save();
                         }
@@ -209,7 +242,12 @@ class UsersAdmController extends Controller
                 }
             }
 
-            return back()->with('success','ID: ('.$UserAdm->id.') Usuário cadastrado com sucesso');
+            //return back()->with('success','ID: ('.$UserAdm->id.') Usuário cadastrado com sucesso');
+            $response['success'] = true;
+            $response['message'] = 'ID: ('.$UserAdm->id.') Usuário cadastrado com sucesso';
+            echo json_encode($response);
+            return;
+
         }
     }
 

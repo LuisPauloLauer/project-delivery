@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Library\GeneralLibrary;
 use App\mdStores;
 use App\mdSegments;
 use App\mdCategoriesStore;
@@ -12,10 +13,20 @@ use App\mdCities;
 use Illuminate\Http\Request;
 use App\Library\FilesControl;
 use App\Http\Requests\admin\StoresFormRequest;
-use Illuminate\Support\Facades\Config;
 
 class StoresController extends Controller
 {
+    private $generalLibrary;
+
+    public function __construct()
+    {
+        $this->generalLibrary = new GeneralLibrary();
+    }
+
+    function __destruct() {
+        unset($this->generalLibrary);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -112,6 +123,7 @@ class StoresController extends Controller
         $Store->fone2 = preg_replace('/\D+/', '', $request->fone2);
         $Store->email = $request->email;
         $Store->description = $request->description;
+        $Store->url_site = $this->generalLibrary->adjustUrlSiteOfStore($request->url_site);
 
         if($Store->save()){
 
@@ -252,6 +264,7 @@ class StoresController extends Controller
         $store->fone2 = preg_replace('/\D+/', '', $request->fone2);
         $store->email = $request->email;
         $store->description = $request->description;
+        $store->url_site = $this->generalLibrary->adjustUrlSiteOfStore($request->url_site);
 
         // Upload of Images
         if(isset($request->imageCapaSave)){

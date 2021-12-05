@@ -117,8 +117,12 @@ class StoresPerfilController extends Controller
 
     public function updateStorePerfilDados(Request $request, mdStores $store)
     {
+        $storeNameAltered = false;
         if($this->generalLibrary->isUserOfStoreSelected()){
 
+            if($store->name !== $request->name){
+                $storeNameAltered = true;
+            }
             $store->name = $request->name;
             $store->fone_store_site = preg_replace('/\D+/', '', $request->fone_store_site);
             $store->description = $request->description;
@@ -194,20 +198,29 @@ class StoresPerfilController extends Controller
 
             if ($store->save()) {
 
+                $dataStoresUserAdm = Session::get('StoresUserAdm');
+
                 if(isset($request->imageLogoSave)){
                     if(!is_null($request->imageLogoSave)){
                         if($request->hasFile('imageLogoInput')){
-                            $dataStoresUserAdm = Session::get('StoresUserAdm');
-
                             for ($i = 0; $i < count($dataStoresUserAdm); $i++) {
                                 if ($dataStoresUserAdm[$i]['selected']) {
                                     $dataStoresUserAdm[$i]['image_logo'] = $store->path_image_logo;
                                 }
                             }
-
                             $request->session()->put('StoresUserAdm', $dataStoresUserAdm);
                         }
                     }
+                }
+
+                if($storeNameAltered){
+                    for ($i = 0; $i < count($dataStoresUserAdm); $i++) {
+                        if ($dataStoresUserAdm[$i]['selected']) {
+                            $dataStoresUserAdm[$i]['name'] = $store->name;
+                            $dataStoresUserAdm[$i]['slug'] = $store->slug;
+                        }
+                    }
+                    $request->session()->put('StoresUserAdm', $dataStoresUserAdm);
                 }
 
                 return back()->with('success', 'ID: ' . $store->id . ' Nome: ' . $store->name . ' (DADOS) alterados com sucesso');
