@@ -7,7 +7,7 @@ use App\mdSocialAccount;
 use App\mdStores;
 use App\UserSite;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
@@ -34,8 +34,10 @@ class UsersSiteController extends Controller
 
         } else if (UserSite::where('email', $email)->where('verification_code', $vcode)->where('is_verified', 0)->exists()) {
             $userSite = UserSite::where('email', $email)->where('verification_code', $vcode)->where('is_verified', 0)->first();
-            $userSite->is_verified = 1;
-            $userSite->verification_code = '';
+
+            $userSite->status               = 'S';
+            $userSite->is_verified          = 1;
+            $userSite->verification_code    = '';
 
             if($userSite->save()){
                 return view('site.user.verifyUser', [
@@ -64,12 +66,6 @@ class UsersSiteController extends Controller
 
     public function redirectToProviderFacebook(Request $request)
     {
-        //$userSite = UserSite::where('id', 8)->first();
-        //dd($userSite);
-        //$request->session()->put('userSiteLogged', $userSite);
-        //return redirect()->route('home.index');
-        //return redirect($request->session()->get('returnurlcallback'));
-
         if(Session::has('userSiteLogged')){
             return redirect()->route('home.index');
         }

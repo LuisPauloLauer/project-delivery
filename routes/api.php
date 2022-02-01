@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 
+Route::get('usuario/retorna-predios','site\api\UsersSiteController@getBuildings');
 Route::post('usuario/registro/email', 'site\api\UsersSiteController@storeUserSiteByEmail');
-
 Route::post('usuario/login/email', 'site\api\UsersSiteController@loginUserSiteByEmail');
 

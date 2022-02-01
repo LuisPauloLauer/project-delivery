@@ -67,6 +67,8 @@ class CreatePayment extends PayPal
                         $itens[$countItens] = new Item();
 
                         $ObjKit = mdKits::where('id', $Kit['item']['id'])->where('status', 'S')->first();
+                        $store = mdKits::find($ObjKit->id)->pesqStore;
+
 
                         $itemName = $ObjKit->name;
                         $itemQnty = (int)$Kit['productSellSubItems'][$i][$Kit['item']['id']]['qnty'];
@@ -94,6 +96,7 @@ class CreatePayment extends PayPal
                     $itens[$countItens] = new Item();
 
                     $ObjProduct = mdProducts::where('id', $Product['item']['id'])->where('status', 'S')->first();
+                    $store = mdProducts::find($ObjProduct->id)->pesqStore;
 
                     $itemName = $ObjProduct->name;
                     $itemQnty = (int)$Product['qty'];
@@ -112,6 +115,8 @@ class CreatePayment extends PayPal
                 }
             }
         }
+
+        $this->shippingPricePayment             = $store->minimum_shipping;
 
         $objItemList = new ItemList();
         $objItemList->setItems($itens);

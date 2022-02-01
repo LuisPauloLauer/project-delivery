@@ -112,10 +112,14 @@ class mdStores extends Model
 
     }
 
-    public function getMinimumOrder()
+    public function getMinimumOrderAttribute()
     {
-        //  return round($this->attributes['unit_price'], 2);
         return number_format($this->attributes['minimum_order'],2);
+    }
+
+    public function getMinimumShippingAttribute()
+    {
+        return number_format($this->attributes['minimum_shipping'],2);
     }
 
     public function pesqCity()

@@ -5,10 +5,13 @@ namespace App\Http\Controllers\site\api;
 use App\Events\site\registerUserSiteByEmailEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\site\UsersSiteFormRequest;
+use App\Http\Resources\site\UniversityBuildingsResource;
+use App\Http\Resources\site\UserSiteResource;
 use App\Library\GeneralLibrary;
 use App\mdStores;
 use App\mdUniversitybuildings;
 use App\UserSite;
+use Illuminate\Http\Request;
 
 
 class UsersSiteController extends Controller
@@ -22,6 +25,24 @@ class UsersSiteController extends Controller
 
     function __destruct() {
         unset($this->generalLibrary);
+    }
+
+    public function getBuildings()
+    {
+        $universityBuildings = mdUniversitybuildings::where('id', '<>', 1)->get();
+
+        if(!$universityBuildings){
+            $response['success'] = false;
+            $response['message'] = 'Erro ao buscar prédios!';
+        } else {
+            $universityBuildings = UniversityBuildingsResource::collection($universityBuildings);
+
+            $response['success'] = true;
+            $response['message'] = 'OK!';
+            $response['buildings'] = $universityBuildings;
+        }
+        echo json_encode($response);
+        return;
     }
 
     public function storeUserSiteByEmail(UsersSiteFormRequest $request)
@@ -88,12 +109,51 @@ class UsersSiteController extends Controller
 
     }
 
-    public function loginUserSiteByEmail()
+    public function loginUserSiteByEmail(Request $request)
     {
-        $response['success']        = true;
-        $response['typeMessage']    = 'teste';
-        $response['message']        = 'Testando api login';
+        if(!filter_var($request->email, FILTER_VALIDATE_EMAIL)){
+            $response['success']        = false;
+            $response['typeMessage']    = 'emailError';
+            $response['message']        = 'O e-mail informado não é valido!';
+        }
+
+        $credentials = $request->only('email', 'password');
+
+        // return response()->json(new JsonResponse(new UserResource($user)), Response::HTTP_OK);
+
+        if(UserSite::where('email', $request->email)->exists()) {
+            if(auth()->guard('site')->attempt($credentials)){
+                $userAuth = auth()->guard('site')->user();
+                if($userAuth->is_verified === 1){
+                    if($userAuth->status === 'S'){
+                        $userAuth = new UserSiteResource($userAuth);
+
+                        $response['success']        = true;
+                        $response['typeMessage']    = 'userSuccess';
+                        $response['user']           = $userAuth;
+                    } else {
+                        $response['success']        = false;
+                        $response['typeMessage']    = 'userError';
+                        $response['message']        = 'Usuário bloqueado!';
+                    }
+                } else {
+                    $response['success']        = false;
+                    $response['typeMessage']    = 'userError';
+                    $response['message']        = 'Ative o usuário verifique seu email: '.$userAuth->email;
+                }
+            } else {
+                $response['success']        = false;
+                $response['typeMessage']    = 'userError';
+                $response['message']        = 'Os dados informados não conferem!';
+            }
+        } else {
+            $response['success']        = false;
+            $response['typeMessage']    = 'userError';
+            $response['message']        = 'usuário não cadastrado';
+        }
+
         echo json_encode($response);
         return;
+
     }
 }

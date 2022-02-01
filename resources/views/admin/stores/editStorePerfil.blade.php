@@ -216,6 +216,12 @@
                                                            id="idminimumorder" name="minimum_order" type="text"
                                                            class="form-control">
                                                 </div>
+                                                <div class="col col-6">
+                                                    <label for="inputMinimumShipping">Frete mínimo:</label>
+                                                    <input value="{{ number_format($Store->minimum_shipping,2) }}"
+                                                           id="idminimumshipping" name="minimum_shipping" type="text"
+                                                           class="form-control">
+                                                </div>
                                             </div>
                                             <div class="form-row mt-3">
                                                 <div class="col-lg-auto">
@@ -601,6 +607,7 @@
             $('#idzipcode').mask('00000-000');
             $('#idfonestoresite').mask('(00) 00000-0000');
             $('#idminimumorder').mask('00000000000000.00', {reverse: true});
+            $('#idminimumshipping').mask('00000000000000.00', {reverse: true});
             $('#idunitprice').mask('00000000000000.00', {reverse: true});
 
             $('#idcity').prop("disabled", true);

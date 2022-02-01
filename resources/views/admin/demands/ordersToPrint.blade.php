@@ -144,7 +144,7 @@
                 <th class="thead-father">Cliente</th>
                 <th class="thead-father">Fone</th>
                 <th class="thead-father text-center">Qnt. total</th>
-                <th class="thead-father text-center">Vlr. total</th>
+                <th class="thead-father text-center">Subtotal</th>
             </tr>
             </thead>
             <tbody>
@@ -152,7 +152,7 @@
                     <td class="tbody-father">{{$DemandFood->user_site_name}}</td>
                     <td class="tbody-father user-site-fone">{{$DemandFood->user_site_fone}}</td>
                     <td class="tbody-father text-center">{{ round($DemandFood->total_amount, 4) }}</td>
-                    <td class="tbody-father text-center">R$ {{ number_format($DemandFood->total_price,2, ',', '.') }}</td>
+                    <td class="tbody-father text-center">R$ {{ number_format($DemandFood->sub_total_price,2, ',', '.') }}</td>
                 </tr>
                 <tr>
                     <th class="tbody-item-father">Item</th>
@@ -219,6 +219,7 @@
             <tr>
                 <td class="tfoot-item-father">Valores</td>
                 <td class="tfoot-item-father-content" colspan="3">
+                    <strong>Vlr. frete: </strong><span>{{ number_format($DemandFood->shipping_price,2, ',', '.') }}</span><span>--</span>
                     <strong>Vlr. total: </strong><span>{{ number_format($DemandFood->total_price,2, ',', '.') }}</span><span>--</span>
                     @if($DemandFood->type_payment == 'Dinheiro' && $DemandFood->money_change > 0)
                         <strong>Troco para: </strong><span>R$ {{ number_format($DemandFood->money_change,2, ',', '.') }}</span>

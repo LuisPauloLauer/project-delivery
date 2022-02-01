@@ -1,13 +1,5 @@
 @extends('admin.layout_master.admin_design')
 
-@section('Stylescss')
-    <style>
-        th.thead-demand{
-            border-top: 0;
-        }
-    </style>
-@endsection
-
 @section('content')
     <!-- Modal Cancel -->
     <div id="idconfirmCancelDemandModal" class="modal fade" role="dialog">
@@ -34,137 +26,6 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-1">
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-left">
-                            <li class="breadcrumb-item"><h5>Novos</h5></li>
-                            <li class="breadcrumb-item active">Pedidos</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /.Content Header (Page header) -->
-
-        <!-- Content -->
-        <section class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <?php $atualDemand = 'null' ?>
-                        @foreach($listDemandsFood as $DemandFood)
-                            @if( $atualDemand <> $DemandFood->demand )
-                                <div class="card card-outline card-danger collapsed-card">
-                                    <div class="card-header">
-                                        <div>
-                                            <div class="table-responsive">
-                                                <table class="table m-0">
-                                                    <thead>
-                                                    <tr>
-                                                        <th class="thead-demand">Pedido</th>
-                                                        <th class="thead-demand">Data</th>
-                                                        <th class="thead-demand">Empresa</th>
-                                                        <th class="thead-demand">Prédio</th>
-                                                        <th class="thead-demand">Cliente</th>
-                                                        <th class="thead-demand">Fone</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr>
-                                                        <td>{{$DemandFood->demand}}</td>
-                                                        <td>{{date_format (new DateTime($DemandFood->datetime), 'd/m/Y h:i')}}</td>
-                                                        <td>{{$DemandFood->company_name}}</td>
-                                                        <td>{{$DemandFood->building_name}}</td>
-                                                        <td>{{$DemandFood->user_site_name}}</td>
-                                                        <td class="fone">{{$DemandFood->user_site_fone}}</td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <div class="card-tools">
-                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                                            </button>
-                                        </div>
-                                        <!-- /.card-tools -->
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table m-0">
-                                                <thead>
-                                                <tr>
-                                                    <th class="thead-demand">Item</th>
-                                                    <th class="thead-demand">Código</th>
-                                                    <th class="thead-demand">Quantidade</th>
-                                                    <th class="thead-demand">Valor unitário</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                @foreach($listDemandsFood as $itemDemandFood)
-                                                    @if($itemDemandFood->demand == $DemandFood->demand )
-                                                        <tr>
-                                                            <td>
-                                                                {{((!is_null($itemDemandFood->kit_id) ? \App\mdKits::find($itemDemandFood->kit_id)->name : \App\mdProducts::find($itemDemandFood->product_id)->name))}}
-                                                            </td>
-                                                            <td>
-                                                                {{((!is_null($itemDemandFood->kit_id) ? $itemDemandFood->kit_id : $itemDemandFood->product_id))}}
-                                                            </td>
-                                                            <td>{{ round($DemandFood->amount, 4) }}</td>
-                                                            <td>
-                                                                R$ {{((!is_null($itemDemandFood->kit_id) ? number_format(\App\mdKits::find($itemDemandFood->kit_id)->pesqPrice(),2, ',', '.')  : number_format(\App\mdProducts::find($itemDemandFood->product_id)->pesqPrice(),2, ',', '.')))}}
-                                                            </td>
-                                                        </tr>
-                                                    @endif
-                                                @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer">
-                                        <div>
-                                            <div class="table-responsive">
-                                                <table class="table m-0">
-                                                    <thead>
-                                                    <tr>
-                                                        <th class="thead-demand">Tp. Entrega</th>
-                                                        <th class="thead-demand">Tp. Pagamento</th>
-                                                        <th class="thead-demand">Valor itens</th>
-                                                        <th class="thead-demand">Valor total</th>
-                                                        <th class="thead-demand">Qnt. total</th>
-                                                        <th class="thead-demand">Troco</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr>
-                                                        <td>{{$DemandFood->type_deliver}}</td>
-                                                        <td>{{$DemandFood->type_payment}}</td>
-                                                        <td>R$ {{ number_format($DemandFood->sub_total_price,2, ',', '.') }}</td>
-                                                        <td>R$ {{ number_format($DemandFood->total_price,2, ',', '.') }}</td>
-                                                        <td>{{ round($DemandFood->total_amount, 4) }}</td>
-                                                        <td>R$ {{ number_format($DemandFood->money_change,2, ',', '.') }}</td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-                            <?php $atualDemand = $DemandFood->demand ?>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- /.Content -->
-    </div>
-    <!-- /.Content Wrapper. Contains page content -->
-
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
         <br>
         <!-- Main content -->
         <section class="content">
@@ -188,28 +49,16 @@
                                                 <!-- we are adding the .class so bootstrap.js collapse plugin detects it -->
                                                 <div class="card card-red">
                                                     <div class="card-header">
-                                                        <div class="row">
-                                                            <div class="col-md-2 col-sm-12">
-                                                                <strong>Pedido: </strong><span>{{$DemandFood->demand}}</span>
+                                                        <h4 class="card-title">
+                                                            <div class="row">
+                                                            <div class="col-md-auto">
+                                                                <span>Pedido código: {{$DemandFood->demand}} </span>
                                                             </div>
-                                                            <div class="col-md-5 col-sm-12">
-                                                                <strong>Empresa: </strong><span>TECH - MASCHINEN ENGENHARIA</span>
+                                                            <div class="col">
+                                                                <a data-toggle="collapse" data-parent="#accordion" href="#pedido{{$DemandFood->demand}}">ver detalhes</a>
                                                             </div>
-                                                            <div class="col-md-5 col-sm-12">
-                                                                <strong>Prédio: </strong><span>Prédio Campus</span>
                                                             </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-5 col-sm-12">
-                                                                <strong>Cliente: </strong><span>{{$DemandFood->user_site_name}}</span>
-                                                            </div>
-                                                            <div class="col-md-5 col-sm-10">
-                                                                <strong>Cliente Fone: </strong><span class="fone">{{$DemandFood->user_site_fone}}</span>
-                                                            </div>
-                                                            <div class="col-md-2 col-sm-2">
-                                                                <a class="float-right"data-toggle="collapse" data-parent="#pedido{{$DemandFood->demand}}" href="#pedido{{$DemandFood->demand}}"><strong>ver detalhes</strong></a>
-                                                            </div>
-                                                        </div>
+                                                        </h4>
                                                     </div>
                                                     <div id="pedido{{$DemandFood->demand}}" class="panel-collapse collapse in">
                                                         <div class="card-body">
@@ -271,7 +120,6 @@
                                                                         }
                                                                         ?>
                                                                     @endif
-                                                                    @if(!is_null($DemandFood->observation))
                                                                     <br>
                                                                     <strong> Observações: </strong>
                                                                     <div class="form-row">
@@ -279,21 +127,29 @@
                                                                             <textarea name="observation" id="idobservation" class="txt-observation md-textarea form-control" rows="2">{{$DemandFood->observation}}</textarea>
                                                                         </div>
                                                                     </div>
-                                                                    @endif
                                                                 </li>
                                                                 <hr class="mb-4">
 
                                             @if( $DemandFood->itens == $DemandFood->total_itens )
                                                             </ul>
                                                             <div class="form-row">
+                                                                <span>Valor do pedido: R$ {{ number_format($DemandFood->sub_total_price,2, ',', '.') }}</span>
                                                                 <span style='color:red;margin-right:1.25em; display:inline-block;'>&nbsp;</span>
-                                                                <span>Valor do pedido: R$ {{ number_format($DemandFood->total_price,2, ',', '.') }}</span>
+                                                                <span>Valor do imposto: R$ {{ number_format($DemandFood->tax_price,2, ',', '.') }}</span>
                                                                 <span style='color:red;margin-right:1.25em; display:inline-block;'>&nbsp;</span>
-                                                                <span>Tipo do pagamento: {{$DemandFood->type_payment}}</span>
-                                                                @if($DemandFood->type_payment == 'Dinheiro' && $DemandFood->money_change > 0)
-                                                                    <span style='color:red;margin-right:1.25em; display:inline-block;'>&nbsp;</span>
-                                                                    <span>Troco para: R$ {{ number_format($DemandFood->money_change,2, ',', '.') }}</span>
-                                                                @endif
+                                                                <span>Valor do frete: R$ {{ number_format($DemandFood->shipping_price,2, ',', '.') }}</span>
+                                                                <span style='color:red;margin-right:1.25em; display:inline-block;'>&nbsp;</span>
+                                                                <span>Valor desconto frete: R$ {{ number_format($DemandFood->shipping_discount_price,2, ',', '.') }}</span>
+                                                                <span style='color:red;margin-right:1.25em; display:inline-block;'>&nbsp;</span>
+                                                                <span>Valor seguro: R$ {{ number_format($DemandFood->insurance_price,2, ',', '.') }}</span>
+                                                                <span style='color:red;margin-right:1.25em; display:inline-block;'>&nbsp;</span>
+                                                                <span>Valor manuseio: R$ {{ number_format($DemandFood->handling_fee_price,2, ',', '.') }}</span>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                Valor total do pedido: R$ {{ number_format($DemandFood->total_price,2, ',', '.') }}
+                                                            </div>
+                                                            <div class="form-row">
+                                                                {{$DemandFood->type_deliver}}
                                                             </div>
                                                             <br>
                                                             <div class="form-row">
@@ -328,15 +184,13 @@
 @endsection
 
 @section('javascript')
-    <script src="{{ asset('admin/node_modules/js/jquery.mask.min.js') }}"></script>
     <script>
+
         $(document).ready(function () {
 
             $('.txt-observation').prop("disabled",true);
 
         });
-
-        $('.fone').mask('(00) 00000-0000');
 
         $(document).on("click", ".btn-change-status-demand", function (event) {
 

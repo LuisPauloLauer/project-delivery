@@ -196,6 +196,12 @@ class StoresPerfilController extends Controller
                 $store->minimum_order = $request->minimum_order;
             }
 
+            if (is_null($request->minimum_shipping)) {
+                $store->minimum_shipping = 0;
+            } else {
+                $store->minimum_shipping = $request->minimum_shipping;
+            }
+
             if ($store->save()) {
 
                 $dataStoresUserAdm = Session::get('StoresUserAdm');

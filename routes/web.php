@@ -1,33 +1,6 @@
 <?php
 
-use App\Events\site\registerUserSiteByEmailEvent;
-use App\Mail\site\registerUserSiteByEmail;
-use App\UserSite;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
-
-/*
-Route::get('teste-envio-email', function (){
-
-    $userSite = new UserSite();
-
-    $userSite->universitybuilding   = 3;
-    $userSite->name                 = 'Luis Paulo';
-    $userSite->slug                 = 'Luis Paulo';
-    $userSite->email                = 'lauer.luispaulo@gmail.com';
-    $userSite->password             = '12345678';
-    $userSite->fone                 = '51997523133';
-    $userSite->verification_code    = sha1(time().rand(111,99999));
-
-    $store = \App\mdStores::where('id', 2)->first();
-
-    $userSite->save();
-
-    //$teste = Mail::send(new registerUserSiteByEmail($userSite, $store));
-    $teste = event(new registerUserSiteByEmailEvent($userSite, $store));
-    dd($teste);
-
-}); */
 
 /*
 |--------------------------------------------------------------------------
@@ -46,9 +19,6 @@ Route::get('/','admin\AdminController@dashboard')->name('dashboard');
 Route::get('login','admin\AdminController@ShowDashboardLoginForm')->name('dashboard.login');
 Route::get('logout','admin\AdminController@DashboardLogout')->name('dashboard.logout');
 Route::post('login/do','admin\AdminController@DashboardLogin')->name('dashboard.login.do');
-
-//Auth::routes();
-
 Route::get('home', 'admin\AdminHomeController@index')->name('dashboard.home');
 
 Route::group(['middleware' => ['auth']], function(){
@@ -161,3 +131,4 @@ Route::get('segmento/{segment}/loja/{store}/{category}', 'site\pageStoresControl
 
 //Route::match(['get', 'post'], '/{segment}/{category}', 'site\pageSegmentsController@showStoresBySegmentByCategory')->name('segment.category.page');
 //Route::get('/home', 'HomeController@index')->name('home');
+*/

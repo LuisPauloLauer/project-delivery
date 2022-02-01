@@ -8,8 +8,11 @@ use Illuminate\Support\Facades\Session;
 
 class CartProduct
 {
+    private $firstAdd;
     public $items               = null;
+    public $shipping            = 0;
     public $totalQty            = 0;
+    public $subTotalPrice       = 0;
     public $totalPrice          = 0;
     public $userSiteId          = null;
     public $userSiteName        = null;
@@ -18,12 +21,17 @@ class CartProduct
     public function __construct($oldCart)
     {
         if($oldCart){
+            $this->firstAdd             = false;
             $this->items                = $oldCart->items;
+            $this->shipping             = $oldCart->shipping;
             $this->totalQty             = $oldCart->totalQty;
+            $this->subTotalPrice        = $oldCart->subTotalPrice;
             $this->totalPrice           = $oldCart->totalPrice;
             $this->userSiteId           = $oldCart->userSiteId;
             $this->userSiteName         = $oldCart->userSiteName;
             $this->store                = $oldCart->store;
+        } else {
+            $this->firstAdd             = true;
         }
     }
 
@@ -43,10 +51,10 @@ class CartProduct
             'price' => $item_price,
             'observation' => $observation,
             'url_image' => (
-                (mdProducts::find($id)->pesqFirstImageProduct) ?
-                    $pathImagens.'/products/store_id_'.$Store->id.'/'.$id.'/small/'.mdProducts::find($id)->pesqFirstImageProduct->path_image :
-                    $pathImagens.'/../../files/images/no_photo.png'
-                ),
+            (mdProducts::find($id)->pesqFirstImageProduct) ?
+                $pathImagens.'/products/store_id_'.$Store->id.'/'.$id.'/small/'.mdProducts::find($id)->pesqFirstImageProduct->path_image :
+                $pathImagens.'/../../files/images/no_photo.png'
+            ),
             'item' => $item
         ];
 
@@ -60,8 +68,10 @@ class CartProduct
         $storedItem['price'] = number_format($item_price * $storedItem['qty'],2);
         $this->items[$id] = $storedItem;
         $this->totalQty += $quantity;
+        $this->subTotalPrice += $item_price * $quantity;
         $this->totalPrice += $item_price * $quantity;
 
+        $this->subTotalPrice = number_format($this->subTotalPrice,2);
         $this->totalPrice = number_format($this->totalPrice,2);
 
         if(Session::has('userSiteLogged')){
@@ -72,6 +82,10 @@ class CartProduct
             $this->userSiteName  = null;
         }
 
+        if($this->firstAdd){
+            $this->totalPrice += $Store->minimum_shipping;
+        }
+        $this->shipping = $Store->minimum_shipping;
         $this->store = $Store->id;
 
     }
@@ -95,6 +109,8 @@ class CartProduct
                     $storedItem['price'] += $item_price;
                     $storedItem['price'] = number_format( $storedItem['price'],2);
                     $this->totalQty++;
+                    $this->subTotalPrice += $item_price;
+                    $this->subTotalPrice = number_format($this->subTotalPrice,2);
                     $this->totalPrice += $item_price;
                     $this->totalPrice = number_format($this->totalPrice,2);
 
@@ -104,6 +120,8 @@ class CartProduct
                     $storedItem['price'] += (-$item_price);
                     $storedItem['price'] = number_format($storedItem['price'],2);
                     $this->totalQty--;
+                    $this->subTotalPrice += (-$item_price);
+                    $this->subTotalPrice = number_format($this->subTotalPrice,2);
                     $this->totalPrice += (-$item_price);
                     $this->totalPrice = number_format($this->totalPrice,2);
 
@@ -129,6 +147,8 @@ class CartProduct
             if (array_key_exists($id, $this->items)) {
 
                 $this->totalQty = $this->totalQty - $this->items[$id]['qty'];
+                $this->subTotalPrice = $this->subTotalPrice - $this->items[$id]['price'];
+                $this->subTotalPrice = number_format($this->subTotalPrice,2);
                 $this->totalPrice = $this->totalPrice - $this->items[$id]['price'];
                 $this->totalPrice = number_format($this->totalPrice,2);
 
@@ -145,11 +165,12 @@ class CartProduct
         }
 
         if(empty($this->items)){
-             $this->items            = null;
-             $this->totalQty         = 0;
-             $this->totalPrice       = 0;
-             $this->userSiteId       = null;
-             $this->userSiteName     = null;
+            $this->items            = null;
+            $this->totalQty         = 0;
+            $this->subTotalPrice       = 0;
+            $this->totalPrice       = 0;
+            $this->userSiteId       = null;
+            $this->userSiteName     = null;
         }
     }
 

@@ -172,6 +172,7 @@
                                                         <th class="thead-demand">Tp. Entrega</th>
                                                         <th class="thead-demand">Tp. Pagamento</th>
                                                         <th class="thead-demand">Valor itens</th>
+                                                        <th class="thead-demand">Valor entrega</th>
                                                         <th class="thead-demand">Valor total</th>
                                                         <th class="thead-demand">Qnt. total</th>
                                                         <th class="thead-demand">Troco</th>
@@ -182,6 +183,7 @@
                                                         <td>{{$DemandFood->type_deliver}}</td>
                                                         <td>{{$DemandFood->type_payment}}</td>
                                                         <td>R$ {{ number_format($DemandFood->sub_total_price,2, ',', '.') }}</td>
+                                                        <td>R$ {{ number_format($DemandFood->shipping_price,2, ',', '.') }}</td>
                                                         <td>R$ {{ number_format($DemandFood->total_price,2, ',', '.') }}</td>
                                                         <td>{{ round($DemandFood->total_amount, 4) }}</td>
                                                         <td>R$ {{ number_format($DemandFood->money_change,2, ',', '.') }}</td>
