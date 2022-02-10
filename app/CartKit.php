@@ -10,6 +10,7 @@ class CartKit
     private $firstAdd;
     public $items                       = null;
     public $shipping                    = 0;
+    public $percDiscount                = 0;
     public $totalQty                    = 0;
     public $subTotalPrice               = 0;
     public $totalPrice                  = 0;
@@ -23,6 +24,7 @@ class CartKit
             $this->firstAdd             = false;
             $this->items                = $oldCart->items;
             $this->shipping             = $oldCart->shipping;
+            $this->percDiscount         = $oldCart->percDiscount;
             $this->totalQty             = $oldCart->totalQty;
             $this->subTotalPrice        = $oldCart->subTotalPrice;
             $this->totalPrice           = $oldCart->totalPrice;
@@ -97,16 +99,27 @@ class CartKit
         if (Session::has('userSiteLogged')) {
             $this->userSiteId = Session::get('userSiteLogged')->id;
             $this->userSiteName = Session::get('userSiteLogged')->name;
+            $universityBuilding = UserSite::find(Session::get('userSiteLogged')->id)->pesqUniversityBuilding;
+            $this->percDiscount = $universityBuilding->percentage_discount;
         } else {
-            $this->userSiteId = null;
+            $this->userSiteId   = null;
             $this->userSiteName = null;
+            $this->percDiscount = 0;
         }
 
         if($this->firstAdd){
             $this->totalPrice += $Store->minimum_shipping;
         }
+
         $this->shipping = $Store->minimum_shipping;
         $this->store = $Store->id;
+
+        if($this->percDiscount > 0){
+            $this->totalPrice = ($this->subTotalPrice + $this->shipping) - (($this->subTotalPrice + $this->shipping) /100*$this->percDiscount);
+        }
+
+        $this->subTotalPrice = number_format($this->subTotalPrice,2);
+        $this->totalPrice = number_format($this->totalPrice,2);
     }
 
     public function edit($id, $SubItemsIndex, $operator)
@@ -138,6 +151,10 @@ class CartKit
                     $this->totalPrice += (-$item_price);
                 }
 
+                if($this->percDiscount > 0) {
+                    $this->totalPrice = ($this->subTotalPrice + $this->shipping) - (($this->subTotalPrice + $this->shipping) /100*$this->percDiscount);
+                }
+
                 $this->items[$id] = $storedItem;
             }
         }
@@ -163,6 +180,21 @@ class CartKit
                 $this->subTotalPrice = $this->subTotalPrice - ($item_price * $this->items[$id]['productSellSubItems'][$SubItemsIndex][$id]['qnty']);
                 $this->totalPrice = $this->totalPrice - ($item_price * $this->items[$id]['productSellSubItems'][$SubItemsIndex][$id]['qnty']);
                 $this->items[$id] = $storedItem;
+
+                if($this->percDiscount > 0){
+                    $this->totalPrice = ($this->subTotalPrice + $this->shipping) - (($this->subTotalPrice + $this->shipping) /100*$this->percDiscount);
+                }
+            }
+        }
+    }
+
+    public function updateValues()
+    {
+        if(Session::has('userSiteLogged') && $this->items && $this->subTotalPrice > 0){
+            $universityBuilding = UserSite::find(Session::get('userSiteLogged')->id)->pesqUniversityBuilding;
+            $this->percDiscount = $universityBuilding->percentage_discount;
+            if($this->percDiscount > 0){
+                $this->totalPrice = ($this->subTotalPrice + $this->shipping) - (($this->subTotalPrice + $this->shipping) /100*$this->percDiscount);
             }
         }
     }

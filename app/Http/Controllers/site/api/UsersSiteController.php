@@ -29,7 +29,25 @@ class UsersSiteController extends Controller
 
     public function getBuildings()
     {
-        $universityBuildings = mdUniversitybuildings::where('id', '<>', 1)->get();
+        $universityBuildings = mdUniversitybuildings::where('id', '<>', 1)->where('company_name', '<>', 'AREZZO')->get();
+
+        if(!$universityBuildings){
+            $response['success'] = false;
+            $response['message'] = 'Erro ao buscar prédios!';
+        } else {
+            $universityBuildings = UniversityBuildingsResource::collection($universityBuildings);
+
+            $response['success'] = true;
+            $response['message'] = 'OK!';
+            $response['buildings'] = $universityBuildings;
+        }
+        echo json_encode($response);
+        return;
+    }
+
+    public function getBuildingByParameters($building)
+    {
+        $universityBuildings = mdUniversitybuildings::where('company_name', '=', strtoupper($building))->get();
 
         if(!$universityBuildings){
             $response['success'] = false;

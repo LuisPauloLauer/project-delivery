@@ -11,6 +11,7 @@ class CartProduct
     private $firstAdd;
     public $items               = null;
     public $shipping            = 0;
+    public $percDiscount        = 0;
     public $totalQty            = 0;
     public $subTotalPrice       = 0;
     public $totalPrice          = 0;
@@ -24,6 +25,7 @@ class CartProduct
             $this->firstAdd             = false;
             $this->items                = $oldCart->items;
             $this->shipping             = $oldCart->shipping;
+            $this->percDiscount         = $oldCart->percDiscount;
             $this->totalQty             = $oldCart->totalQty;
             $this->subTotalPrice        = $oldCart->subTotalPrice;
             $this->totalPrice           = $oldCart->totalPrice;
@@ -71,23 +73,30 @@ class CartProduct
         $this->subTotalPrice += $item_price * $quantity;
         $this->totalPrice += $item_price * $quantity;
 
-        $this->subTotalPrice = number_format($this->subTotalPrice,2);
-        $this->totalPrice = number_format($this->totalPrice,2);
-
         if(Session::has('userSiteLogged')){
             $this->userSiteId    = Session::get('userSiteLogged')->id;
             $this->userSiteName  = Session::get('userSiteLogged')->name;
+            $universityBuilding = UserSite::find(Session::get('userSiteLogged')->id)->pesqUniversityBuilding;
+            $this->percDiscount = $universityBuilding->percentage_discount;
         } else {
             $this->userSiteId    = null;
             $this->userSiteName  = null;
+            $this->percDiscount = 0;
         }
 
         if($this->firstAdd){
             $this->totalPrice += $Store->minimum_shipping;
         }
+
         $this->shipping = $Store->minimum_shipping;
         $this->store = $Store->id;
 
+        if($this->percDiscount > 0){
+            $this->totalPrice = ($this->subTotalPrice + $this->shipping) - (($this->subTotalPrice + $this->shipping) /100*$this->percDiscount);
+        }
+
+        $this->subTotalPrice = number_format($this->subTotalPrice,2);
+        $this->totalPrice = number_format($this->totalPrice,2);
     }
 
     public function edit($id, $operator)
@@ -104,29 +113,25 @@ class CartProduct
                 $storedItem = $this->items[$id];
 
                 if ($operator == 'plus') {
-
                     $storedItem['qty'] += 1;
                     $storedItem['price'] += $item_price;
-                    $storedItem['price'] = number_format( $storedItem['price'],2);
                     $this->totalQty++;
                     $this->subTotalPrice += $item_price;
-                    $this->subTotalPrice = number_format($this->subTotalPrice,2);
                     $this->totalPrice += $item_price;
-                    $this->totalPrice = number_format($this->totalPrice,2);
-
                 } else if ($operator == 'minus') {
-
                     $storedItem['qty'] += (-1);
                     $storedItem['price'] += (-$item_price);
-                    $storedItem['price'] = number_format($storedItem['price'],2);
                     $this->totalQty--;
                     $this->subTotalPrice += (-$item_price);
-                    $this->subTotalPrice = number_format($this->subTotalPrice,2);
                     $this->totalPrice += (-$item_price);
-                    $this->totalPrice = number_format($this->totalPrice,2);
-
                 }
 
+                if($this->percDiscount > 0){
+                    $this->totalPrice = ($this->subTotalPrice + $this->shipping) - (($this->subTotalPrice + $this->shipping) /100*$this->percDiscount);
+                }
+                $storedItem['price'] = number_format($storedItem['price'],2);
+                $this->subTotalPrice = number_format($this->subTotalPrice,2);
+                $this->totalPrice = number_format($this->totalPrice,2);
                 $this->items[$id] = $storedItem;
 
             }
@@ -145,11 +150,14 @@ class CartProduct
     {
         if ($this->items) {
             if (array_key_exists($id, $this->items)) {
-
                 $this->totalQty = $this->totalQty - $this->items[$id]['qty'];
                 $this->subTotalPrice = $this->subTotalPrice - $this->items[$id]['price'];
-                $this->subTotalPrice = number_format($this->subTotalPrice,2);
                 $this->totalPrice = $this->totalPrice - $this->items[$id]['price'];
+                if($this->percDiscount > 0){
+                    $this->totalPrice = ($this->subTotalPrice + $this->shipping) - (($this->subTotalPrice + $this->shipping) /100*$this->percDiscount);
+                }
+
+                $this->subTotalPrice = number_format($this->subTotalPrice,2);
                 $this->totalPrice = number_format($this->totalPrice,2);
 
                 unset($this->items[$id]);
@@ -165,13 +173,23 @@ class CartProduct
         }
 
         if(empty($this->items)){
-            $this->items            = null;
-            $this->totalQty         = 0;
-            $this->subTotalPrice       = 0;
-            $this->totalPrice       = 0;
-            $this->userSiteId       = null;
-            $this->userSiteName     = null;
+            $this->items           = null;
+            $this->totalQty        = 0;
+            $this->subTotalPrice   = 0;
+            $this->totalPrice      = 0;
+            $this->userSiteId      = null;
+            $this->userSiteName    = null;
         }
     }
 
+    public function updateValues()
+    {
+        if(Session::has('userSiteLogged') && $this->items && $this->subTotalPrice > 0){
+            $universityBuilding = UserSite::find(Session::get('userSiteLogged')->id)->pesqUniversityBuilding;
+            $this->percDiscount = $universityBuilding->percentage_discount;
+            if($this->percDiscount > 0){
+                $this->totalPrice = ($this->subTotalPrice + $this->shipping) - (($this->subTotalPrice + $this->shipping) /100*$this->percDiscount);
+            }
+        }
+    }
 }

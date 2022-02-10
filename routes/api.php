@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 //});
 
 Route::get('usuario/retorna-predios','site\api\UsersSiteController@getBuildings');
+Route::get('usuario/retorna-predio/{building}','site\api\UsersSiteController@getBuildingByParameters');
 Route::post('usuario/registro/email', 'site\api\UsersSiteController@storeUserSiteByEmail');
 Route::post('usuario/login/email', 'site\api\UsersSiteController@loginUserSiteByEmail');
 
