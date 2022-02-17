@@ -220,6 +220,9 @@
                 <td class="tfoot-item-father">Valores</td>
                 <td class="tfoot-item-father-content" colspan="3">
                     <strong>Vlr. frete: </strong><span>{{ number_format($DemandFood->shipping_price,2, ',', '.') }}</span><span>--</span>
+                    @if($DemandFood->percentage_discount > 0)
+                        <strong>Desconto: </strong><span>{{ $DemandFood->percentage_discount }}%</span><span>--</span>
+                    @endif
                     <strong>Vlr. total: </strong><span>{{ number_format($DemandFood->total_price,2, ',', '.') }}</span><span>--</span>
                     @if($DemandFood->type_payment == 'Dinheiro' && $DemandFood->money_change > 0)
                         <strong>Troco para: </strong><span>R$ {{ number_format($DemandFood->money_change,2, ',', '.') }}</span>
