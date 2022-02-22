@@ -4,6 +4,8 @@
 namespace App\Library;
 
 
+use App\mdDaysOfWeek;
+use App\mdDeliveryStoreTimes;
 use App\mdRelStoresUsersAdm;
 use App\mdStores;
 use App\User;
@@ -82,6 +84,35 @@ class GeneralLibrary
         return $UsersAdm = User::whereIn('id', $inUsersAdmStore)->orderBy('id','asc')->get();
     }
 
+    public function isStoreOpenToDelivery(mdStores $store){
+
+        $daysOfWeek = [
+            "Monday"        => "Segunda",
+            "Tuesday"       => "Terça",
+            "Wednesday"     => "Quarta",
+            "Thursday"      => "Quinta",
+            "Friday"        => "Sexta",
+            "Saturday"      => "Sábado",
+            "Sunday"        => "Domingo"
+        ];
+
+        if(strtoupper($store->status) === 'N' || strtoupper($store->active_store_site) === 'N'){
+            return false;
+        } else {
+            $dateTymeNow = now();
+            $dayOfWeekBR = $daysOfWeek[$dateTymeNow->dayName];
+            $dayOfWeekData = mdDaysOfWeek::where('day', '=', $dayOfWeekBR)->first();
+            $deliveryTimeDayOfWeek = mdDeliveryStoreTimes::where('store', $store->id)->where('status', 'S')->where('day', $dayOfWeekData->id)->first();
+
+            if($dateTymeNow->isBetween($deliveryTimeDayOfWeek->periodo1_ini, $deliveryTimeDayOfWeek->periodo1_end) || $dateTymeNow->isBetween($deliveryTimeDayOfWeek->periodo2_ini, $deliveryTimeDayOfWeek->periodo2_end)){
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    //Adjuste Phone number
     private function numberAdjust($pNumber, $pAdd9, $pDel9)
     {
         if($pAdd9) {
@@ -137,6 +168,7 @@ class GeneralLibrary
         return preg_replace('/[^0-9]/', '', $pNumber);
     }
 
+    //Adjuste Phone number digit 9
     public function adjustDigitNumberNine($pNumber, $pAdd9=true, $pDel9=false)
     {
         if (empty($pNumber))
@@ -148,6 +180,7 @@ class GeneralLibrary
         return $number;
     }
 
+    //Validate Phone Number
     public function validatePhoneNumber($phoneNumber)
     {
         $phoneNumber = trim(str_replace('/', '', str_replace(' ', '', str_replace('-', '', str_replace(')', '', str_replace('(', '', $phoneNumber))))));
@@ -158,15 +191,6 @@ class GeneralLibrary
             return true;
         } else {
             return false;
-        }
-    }
-
-    public function adjustUrlSiteOfStore($urlSite)
-    {
-        if($urlSite[strlen($urlSite)-1] === '/'){
-            return substr($urlSite, 0, strlen($urlSite)-1);
-        } else {
-            return substr($urlSite, 0, strlen($urlSite));
         }
     }
 }

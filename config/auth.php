@@ -51,6 +51,12 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+
+        'apiSite' => [
+            'driver' => 'token',
+            'provider' => 'userssite',
+            'hash' => false,
+        ],
     ],
 
     /*

@@ -141,7 +141,6 @@
                     idCategory: idCategory
                 }).then(response => {
                     if(response.data.success === true){
-
                         if(response.data.kits){
                             this.kitsNew = response.data.kits;
                         } else {
@@ -154,7 +153,6 @@
                             this.productsNew = [];
                             this.isProductChange = false;
                         }
-
                     } else {
                         alert(response.data.message);
                     }
