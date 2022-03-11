@@ -27,11 +27,11 @@ Route::namespace('site\api')->group(function() {
     Route::get('usuario/retorna-predio/{building}','UsersSiteController@getBuildingByParameters');
     Route::post('usuario/registro/email', 'UsersSiteController@storeUserSiteByEmail');
     Route::post('usuario/login/email', 'UsersSiteController@loginUserSiteByEmail');
-    //Route::get('store/delivery/status/{store}','StoresController@verifyStoreOpenToDelivery');
+    Route::get('store/delivery/status/{store}','StoresController@verifyStoreOpenToDelivery');
 
-    Route::group(['middleware' => 'auth:site'], function () {
-        Route::get('store/delivery/status/{store}','StoresController@verifyStoreOpenToDelivery');
-    });
+    //Route::group(['middleware' => 'auth:site'], function () {
+    //    Route::get('store/delivery/status/{store}','StoresController@verifyStoreOpenToDelivery');
+    //});
 
 //    Route::group(['middleware' => 'auth:site'], function () {
 //        Route::get('store/delivery/status/{store}','StoresController@verifyStoreOpenToDelivery');
